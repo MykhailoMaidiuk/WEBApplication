@@ -1,0 +1,64 @@
+2024-09-27 16:14:59,811 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.2:8000
+2024-09-27 16:14:59,813 [INFO] [33mPress CTRL+C to quit[0m
+2024-09-27 16:15:30,383 [INFO] 172.18.0.1 - - [27/Sep/2024 16:15:30] "[33mGET / HTTP/1.1[0m" 404 -
+2024-09-27 16:15:30,663 [INFO] 172.18.0.1 - - [27/Sep/2024 16:15:30] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-09-27 16:18:40,813 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.2:8000
+2024-09-27 16:18:40,817 [INFO] [33mPress CTRL+C to quit[0m
+2024-09-27 16:18:42,580 [INFO] 172.18.0.1 - - [27/Sep/2024 16:18:42] "[33mGET / HTTP/1.1[0m" 404 -
+2024-09-27 20:03:00,267 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.2:8000
+2024-09-27 20:03:00,268 [INFO] [33mPress CTRL+C to quit[0m
+2024-09-27 20:07:30,564 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.2:8000
+2024-09-27 20:07:30,564 [INFO] [33mPress CTRL+C to quit[0m
+2024-09-27 20:14:42,365 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.2:8000
+2024-09-27 20:14:42,365 [INFO] [33mPress CTRL+C to quit[0m
+2024-09-27 20:15:15,981 [INFO] 172.18.0.1 - - [27/Sep/2024 20:15:15] "[33mGET / HTTP/1.1[0m" 404 -
+2024-09-27 20:15:16,193 [INFO] 172.18.0.1 - - [27/Sep/2024 20:15:16] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-09-28 09:32:52,677 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.2:8000
+2024-09-28 09:32:52,677 [INFO] [33mPress CTRL+C to quit[0m
+2024-09-28 09:33:03,560 [INFO] 172.18.0.1 - - [28/Sep/2024 09:33:03] "[33mGET / HTTP/1.1[0m" 404 -
+2024-09-28 09:33:17,028 [INFO] Hello endpoint was called
+2024-09-28 09:33:17,029 [INFO] 172.18.0.3 - - [28/Sep/2024 09:33:17] "GET /api/hello HTTP/1.0" 200 -
+2024-09-28 09:33:26,412 [INFO] Hello endpoint was called
+2024-09-28 09:33:26,412 [INFO] 172.18.0.3 - - [28/Sep/2024 09:33:26] "GET /api/hello HTTP/1.0" 200 -
+2024-09-28 09:49:03,428 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.2:8000
+2024-09-28 09:49:03,429 [INFO] [33mPress CTRL+C to quit[0m
+2024-09-28 09:50:17,071 [INFO] 172.18.0.1 - - [28/Sep/2024 09:50:17] "[33mGET / HTTP/1.1[0m" 404 -
+2024-09-28 09:50:17,210 [INFO] 172.18.0.1 - - [28/Sep/2024 09:50:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-09-28 09:50:27,314 [INFO] Hello endpoint was called
+2024-09-28 09:50:27,315 [INFO] 172.18.0.3 - - [28/Sep/2024 09:50:27] "GET /api/hello HTTP/1.0" 200 -
+2024-09-28 09:50:42,093 [INFO] Hello endpoint was called
+2024-09-28 09:50:42,093 [INFO] 172.18.0.3 - - [28/Sep/2024 09:50:42] "GET /api/hello HTTP/1.0" 200 -
+2024-09-28 09:52:33,745 [INFO] Hello endpoint was called
+2024-09-28 09:52:33,746 [INFO] 172.18.0.3 - - [28/Sep/2024 09:52:33] "GET /api/hello HTTP/1.0" 200 -
+2024-09-28 09:53:28,842 [INFO] Hello endpoint was called
+2024-09-28 09:53:28,843 [INFO] 172.18.0.3 - - [28/Sep/2024 09:53:28] "GET /api/hello HTTP/1.0" 200 -
+2024-09-28 11:59:17,219 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.2:8000
+2024-09-28 11:59:17,219 [INFO] [33mPress CTRL+C to quit[0m
+2024-09-28 11:59:28,304 [INFO] Hello endpoint was called
+2024-09-28 11:59:28,305 [INFO] 172.18.0.3 - - [28/Sep/2024 11:59:28] "GET /api/hello HTTP/1.0" 200 -
+2024-09-28 11:59:33,468 [INFO] Hello endpoint was called
+2024-09-28 11:59:33,469 [INFO] 172.18.0.3 - - [28/Sep/2024 11:59:33] "GET /api/hello HTTP/1.0" 200 -
