@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Docker World</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Hello Docker World</h1>
+        <p id="message">Loading...</p>
+    </div>
+    <script>
+        fetch('/api/hello')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('message').textContent = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('message').textContent = 'Error loading message';
+            });
+    </script>
+</body>
+</html>
