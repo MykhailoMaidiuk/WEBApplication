@@ -57,3 +57,5 @@
 2024-10-06 01:31:04,210 INFO 127.0.0.1 - - [06/Oct/2024 01:31:04] "GET / HTTP/1.1" 200 -
 2024-10-06 01:31:52,307 INFO HelloWorld endpoint was called
 2024-10-06 01:31:52,307 INFO 127.0.0.1 - - [06/Oct/2024 01:31:52] "GET / HTTP/1.1" 200 -
+2024-10-08 13:12:15,543 INFO HelloWorld endpoint was called
+2024-10-08 13:13:35,703 INFO HelloWorld endpoint was called
