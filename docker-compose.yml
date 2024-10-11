@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: sk10-web
+    build:
+      context: ./backend
+    ports:
+      - "8009:8009"
+    volumes:
+      - ./backend/logs:/usr/src/app/logs
+    networks:
+      - cdb-network
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: db
+
+  frontend:
+    container_name: sk10-frontend
+    build:
+      context: ./frontend/react-app
+    ports:
+      - "3009:80"  # Map container port 80 to host port 3009
+    volumes:
+      - ./frontend/logs:/var/log/nginx
+    networks:
+      - cdb-network
+
+  db:
+    image: postgres:latest
+    container_name: my_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - cdb-network
+
+  sql-client:
+    image: dbeaver/cloudbeaver:latest
+    container_name: sk10-sql-client
+    ports:
+      - "10009:8978"
+    environment:
+      CB_SERVER_HOST: "${CB_SERVER_HOST}"
+      CB_SERVER_PORT: "${CB_SERVER_PORT}"
+    networks:
+      - cdb-network
+
+networks:
+  cdb-network:
+    external: true
+    name: cdb-network
+
+volumes:
+  postgres-data:
