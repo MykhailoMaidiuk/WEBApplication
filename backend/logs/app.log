@@ -59,3 +59,31 @@
 2024-10-06 01:31:52,307 INFO 127.0.0.1 - - [06/Oct/2024 01:31:52] "GET / HTTP/1.1" 200 -
 2024-10-08 13:12:15,543 INFO HelloWorld endpoint was called
 2024-10-08 13:13:35,703 INFO HelloWorld endpoint was called
+2024-10-13 16:29:22,061 INFO Приложение запускается
+2024-10-13 16:29:22,062 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-13 16:56:45,812 INFO Приложение запускается
+2024-10-13 16:56:45,813 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-13 16:56:46,080 INFO Таблицы базы данных созданы
+2024-10-13 16:56:46,085 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-13 16:56:46,086 INFO [33mPress CTRL+C to quit[0m
+2024-10-13 16:57:00,189 INFO HelloWorld endpoint was called
+2024-10-13 16:57:00,190 INFO 172.20.0.1 - - [13/Oct/2024 16:57:00] "GET / HTTP/1.1" 200 -
+2024-10-13 16:59:28,291 INFO Data endpoint was called
+2024-10-13 16:59:28,293 INFO Получены данные: [{'isbn13': '9780099449867', 'isbn10': '0099449862', 'title': 'Elephant', 'categories': 'Short stories, American', 'subtitle': 'And Other Stories', 'authors': 'Douglas Stone;Bruce Patton;Sheila Heen', 'thumbnail': 'http://books.google.com/books/content?id=QfNgQfTKcg0C&printsec=frontcover&img=1&zoom=1&source=gbs_api', 'description': 'Description text', 'published_year': 2004, 'average_rating': 3.6, 'num_pages': 306, 'ratings_count': 327}]
+2024-10-13 16:59:28,308 INFO Удалено 0 старых записей
+2024-10-13 16:59:28,319 INFO Добавлено 1 новых записей
+2024-10-13 16:59:28,321 INFO 172.20.0.1 - - [13/Oct/2024 16:59:28] "POST /data HTTP/1.1" 200 -
+2024-10-13 17:02:53,319 INFO Data endpoint was called
+2024-10-13 17:02:53,320 ERROR Некорректный запрос: ожидается JSON
+2024-10-13 17:02:53,322 INFO 172.20.0.1 - - [13/Oct/2024 17:02:53] "[31m[1mPOST /data HTTP/1.1[0m" 400 -
+2024-10-13 17:02:58,681 INFO 172.20.0.1 - - [13/Oct/2024 17:02:58] "[31m[1mGET /data HTTP/1.1[0m" 405 -
+2024-10-13 17:03:14,341 INFO Data endpoint was called
+2024-10-13 17:03:14,342 ERROR Некорректный запрос: ожидается JSON
+2024-10-13 17:03:14,343 INFO 172.20.0.1 - - [13/Oct/2024 17:03:14] "[31m[1mPOST /data HTTP/1.1[0m" 400 -
+2024-10-13 17:06:08,151 ERROR 172.20.0.1 - - [13/Oct/2024 17:06:08] code 400, message Bad request syntax ('MGLNDD_147.230.231.191_8009')
+2024-10-13 17:06:08,151 INFO 172.20.0.1 - - [13/Oct/2024 17:06:08] "[31m[1mMGLNDD_147.230.231.191_8009[0m" 400 -
+2024-10-13 17:10:32,443 INFO Приложение запускается
+2024-10-13 17:10:32,446 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
