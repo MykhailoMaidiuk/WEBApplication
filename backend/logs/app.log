@@ -87,3 +87,21 @@
 2024-10-13 17:06:08,151 INFO 172.20.0.1 - - [13/Oct/2024 17:06:08] "[31m[1mMGLNDD_147.230.231.191_8009[0m" 400 -
 2024-10-13 17:10:32,443 INFO Приложение запускается
 2024-10-13 17:10:32,446 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-13 17:42:53,799 INFO Application is starting
+2024-10-13 17:42:53,800 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-13 17:44:46,224 INFO Application is starting
+2024-10-13 17:44:46,224 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-13 17:45:48,804 INFO Приложение запускается
+2024-10-13 17:45:48,805 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-13 17:49:58,934 INFO Application is starting
+2024-10-13 17:49:58,934 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-13 17:49:59,011 INFO Database tables created
+2024-10-13 17:49:59,017 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-13 17:49:59,017 INFO [33mPress CTRL+C to quit[0m
+2024-10-13 17:50:05,554 INFO HelloWorld endpoint was called
+2024-10-13 17:50:05,555 INFO 172.20.0.1 - - [13/Oct/2024 17:50:05] "GET / HTTP/1.1" 200 -
+2024-10-13 18:10:57,398 ERROR 172.20.0.1 - - [13/Oct/2024 18:10:57] code 400, message Bad request version ('À\x14À')
+2024-10-13 18:10:57,399 INFO 172.20.0.1 - - [13/Oct/2024 18:10:57] "[31m[1m\x16\x03\x01\x00{\x01\x00\x00w\x03\x03Ì![×Ð ¾G\x00Ù»\x1d\x92\x021Ce0`º\x9e\x8fM\x1b´"§­2âÉ\x7f\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À[0m" 400 -
