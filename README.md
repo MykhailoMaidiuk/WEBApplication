@@ -1,64 +1,56 @@
-# **Books Application**
+# Book Catalog Application
 
-A full-stack application for displaying and managing book data. The backend is built with Flask and connects to a PostgreSQL database, while the frontend is developed using React. Docker is used for containerization to simplify deployment.
+A full-stack web application that allows users to browse and search for books. The frontend is built with React and served by Nginx, while the backend is developed using Flask and connects to a PostgreSQL database. The entire application is containerized using Docker and orchestrated with Docker Compose for seamless deployment and scalability.
 
----
+## Table of Contents
 
-## **Table of Contents**
-
-- [Description](#description)
 - [Features](#features)
+- [Technologies Used](#technologies-used)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Configuration](#configuration)
-- [Running the Application](#running-the-application)
+- [Usage](#usage)
 - [API Endpoints](#api-endpoints)
 - [Project Structure](#project-structure)
-- [Docker Usage](#docker-usage)
-- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
 - [License](#license)
-- [Acknowledgments](#acknowledgments)
 
----
+## Features
 
-## **Description**
+- **Browse Books:** View a list of books with their cover images, titles, and categories.
+- **Search Functionality:** Search for books by title, author, or category.
+- **Responsive Design:** User-friendly interface that works well on various devices.
+- **Dockerized Setup:** Easily deploy the application using Docker and Docker Compose.
+- **Logging:** Comprehensive logging for both frontend and backend to aid in debugging and monitoring.
 
-This application fetches book data from a REST service and displays it on the frontend. The backend provides an endpoint to receive book data in JSON format, processes it, and stores it in a PostgreSQL database. The frontend fetches data from the backend and displays it to the user.
+## Technologies Used
 
----
-
-## **Features**
+- **Frontend:**
+  - React
+  - Nginx
+  - CSS
 
 - **Backend:**
-  - Flask application with REST API.
-  - PostgreSQL database integration using SQLAlchemy.
-  - Data validation and error handling.
-  - Logging to file and console.
-- **Frontend:**
-  - React application with component-based architecture.
-  - Responsive design using CSS.
-  - Fetches and displays book data from the backend.
-- **Dockerized:**
-  - Multi-stage Docker builds for optimized images.
-  - Docker Compose configuration for managing multiple services.
+  - Flask
+  - SQLAlchemy
+  - PostgreSQL
+  - Flask-CORS
 
----
+- **Containerization:**
+  - Docker
+  - Docker Compose
 
-## **Prerequisites**
+- **Others:**
+  - DBeaver (SQL Client)
 
-Before you begin, ensure you have the following installed:
+## Prerequisites
 
-- [Docker](https://www.docker.com/get-started) and Docker Compose
-- [Node.js](https://nodejs.org/) and npm (if running frontend locally)
-- [Python 3.10+](https://www.python.org/downloads/) and pip (if running backend locally)
-- [PostgreSQL](https://www.postgresql.org/download/) (if not using Docker for the database)
+- [Docker](https://www.docker.com/get-started) installed on your machine.
+- [Docker Compose](https://docs.docker.com/compose/install/) installed.
 
----
+## Installation
 
-## **Installation**
+1. **Clone the Repository:**
 
-### **Clone the Repository**
-
-```bash
-git clone https://gitlab.tul.cz/mykhailo.maidiuk/bookweb/-/tree/main
-cd bookweb
+   ```bash
+   git clone https://github.com/yourusername/book-catalog.git](https://github.com/MykhailoMaidiuk/WEBApplication/tree/mykhailodev
+   cd book-catalog
