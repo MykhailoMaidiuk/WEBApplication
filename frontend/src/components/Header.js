@@ -4,6 +4,12 @@ import React, { useState } from 'react';
 function Header({ getBooks }) {
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Определяем URL API в зависимости от среды
+  const API_URL =
+    window.location.hostname === 'localhost'
+      ? 'http://localhost:8009'
+      : 'http://backend:8009';
+
   const handleSubmit = (e) => {
     e.preventDefault();
     getBooksBySearch(searchTerm);
@@ -13,7 +19,7 @@ function Header({ getBooks }) {
   const getBooksBySearch = async (query) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/books/search?query=${encodeURIComponent(query)}`
+        `${API_URL}/books/search?query=${encodeURIComponent(query)}`
       );
       const data = await response.json();
       getBooks(data);

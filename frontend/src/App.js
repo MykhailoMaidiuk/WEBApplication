@@ -7,14 +7,18 @@ import './index.css';
 function App() {
   const [books, setBooks] = useState([]);
 
+  const API_URL =
+    window.location.hostname === 'localhost'
+      ? 'http://localhost:8009'
+      : 'http://backend:8009';
+
   useEffect(() => {
     getBooks();
   }, []);
 
   const getBooks = async () => {
     try {
-      // Напрямую используем URL API
-      const response = await fetch('http://localhost:8009/books');
+      const response = await fetch(`${API_URL}/books`);
       const data = await response.json();
       setBooks(data);
     } catch (error) {
@@ -24,7 +28,7 @@ function App() {
 
   return (
     <div>
-      <Header getBooks={getBooks} />
+      <Header getBooks={setBooks} />
       <div className="container">
         <BooksList books={books} />
       </div>

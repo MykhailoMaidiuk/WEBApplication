@@ -1,34 +1,34 @@
 # frontend/Dockerfile
 
-# Этап сборки
+# Build stage
 FROM node:14-alpine AS build
 WORKDIR /app
 
-# Копируем package.json и устанавливаем зависимости
+# Copy package.json and install dependencies
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Копируем исходный код
+# Copy source code
 COPY . ./
 
-# Передаём переменную окружения для API URL
+# Pass environment variable for API URL
 ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
 
-# Сборка React приложения
+# Build React application
 RUN npm run build
 
-# Этап продакшена
+# Production stage
 FROM nginx:alpine
 
-# Копируем собранное приложение в директорию nginx
+# Copy built application to nginx directory
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Копируем конфигурацию nginx
+# Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Указываем порт
+# Expose port
 EXPOSE 80
 
-# Запускаем nginx
+# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
