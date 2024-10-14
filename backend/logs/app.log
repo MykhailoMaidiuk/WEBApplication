@@ -200,3 +200,65 @@
 2024-10-14 19:42:21,915 INFO 172.20.0.1 - - [14/Oct/2024 19:42:21] "GET / HTTP/1.1" 200 -
 2024-10-14 19:42:25,618 INFO Вызван endpoint /books
 2024-10-14 19:42:25,670 INFO 172.20.0.1 - - [14/Oct/2024 19:42:25] "GET /books HTTP/1.1" 200 -
+2024-10-14 19:53:05,056 INFO Приложение запускается
+2024-10-14 19:53:05,057 INFO Настройки базы данных: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 19:53:05,184 INFO Таблицы базы данных созданы
+2024-10-14 19:53:05,197 INFO Удалено 816 старых записей
+2024-10-14 19:53:05,444 INFO Данные из CSV успешно импортированы
+2024-10-14 19:53:05,451 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 19:53:05,451 INFO [33mPress CTRL+C to quit[0m
+2024-10-14 19:53:08,863 INFO Вызван endpoint HelloWorld
+2024-10-14 19:53:08,864 INFO 172.20.0.1 - - [14/Oct/2024 19:53:08] "GET / HTTP/1.1" 200 -
+2024-10-14 19:53:11,472 INFO Вызван endpoint /books
+2024-10-14 19:53:11,504 INFO 172.20.0.1 - - [14/Oct/2024 19:53:11] "GET /books HTTP/1.1" 200 -
+2024-10-14 20:06:14,703 INFO Приложение запускается
+2024-10-14 20:06:14,703 INFO Настройки базы данных: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 20:06:14,803 INFO Таблицы базы данных созданы
+2024-10-14 20:06:14,826 INFO Удалено 816 старых записей
+2024-10-14 20:06:15,004 INFO Данные из CSV успешно импортированы
+2024-10-14 20:06:15,009 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 20:06:15,009 INFO [33mPress CTRL+C to quit[0m
+2024-10-14 20:06:53,323 INFO Вызван endpoint HelloWorld
+2024-10-14 20:06:53,328 INFO 172.20.0.1 - - [14/Oct/2024 20:06:53] "GET / HTTP/1.1" 200 -
+2024-10-14 20:06:58,533 INFO Вызван endpoint /books
+2024-10-14 20:06:58,590 INFO 172.20.0.1 - - [14/Oct/2024 20:06:58] "GET /books HTTP/1.1" 200 -
+2024-10-14 20:12:49,002 INFO Приложение запускается
+2024-10-14 20:12:49,003 INFO Настройки базы данных: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 20:12:49,079 INFO Таблицы базы данных созданы
+2024-10-14 20:12:49,101 INFO Удалено 816 старых записей
+2024-10-14 20:12:49,264 INFO Данные из CSV успешно импортированы
+2024-10-14 20:12:49,270 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 20:12:49,270 INFO [33mPress CTRL+C to quit[0m
+2024-10-14 20:22:36,087 INFO Приложение запускается
+2024-10-14 20:22:36,087 INFO Настройки базы данных: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 20:22:36,163 INFO Таблицы базы данных созданы
+2024-10-14 20:22:36,183 INFO Удалено 816 старых записей
+2024-10-14 20:22:36,364 INFO Данные из CSV успешно импортированы
+2024-10-14 20:22:36,369 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 20:22:36,370 INFO [33mPress CTRL+C to quit[0m
+2024-10-14 20:23:11,893 INFO Вызван endpoint HelloWorld
+2024-10-14 20:23:11,897 INFO 172.20.0.1 - - [14/Oct/2024 20:23:11] "GET / HTTP/1.1" 200 -
+2024-10-14 20:23:18,474 INFO Вызван endpoint /books
+2024-10-14 20:23:18,515 INFO 172.20.0.1 - - [14/Oct/2024 20:23:18] "GET /books HTTP/1.1" 200 -
+2024-10-14 20:27:55,376 INFO Приложение запускается
+2024-10-14 20:27:55,377 INFO Настройки базы данных: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 20:27:55,492 INFO Таблицы базы данных созданы
+2024-10-14 20:27:55,521 INFO Удалено 816 старых записей
+2024-10-14 20:27:55,691 INFO Данные из CSV успешно импортированы
+2024-10-14 20:27:55,696 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 20:27:55,697 INFO [33mPress CTRL+C to quit[0m

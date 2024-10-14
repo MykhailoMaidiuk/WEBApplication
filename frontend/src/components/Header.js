@@ -1,16 +1,24 @@
 // src/components/Header.js
 import React, { useState } from 'react';
 
-function Header({ getMovies }) {
+function Header({ getBooks }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const API_URL_SEARCH =
-    "https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=";
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (searchTerm) {
-      getMovies(`${API_URL_SEARCH}${searchTerm}`);
-      setSearchTerm('');
+    getBooksBySearch(searchTerm);
+    setSearchTerm('');
+  };
+
+  const getBooksBySearch = async (query) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/books/search?query=${encodeURIComponent(query)}`
+      );
+      const data = await response.json();
+      getBooks(data);
+    } catch (error) {
+      console.error('Ошибка при поиске книг:', error);
     }
   };
 

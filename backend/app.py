@@ -9,6 +9,8 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 import sys
 import time
 import csv
+from sqlalchemy import or_
+
 
 # Создание Flask приложения
 app = Flask(__name__)
@@ -229,6 +231,31 @@ def import_data_from_csv():
     finally:
         session.close()
 
+
+
+
+# Endpoint для поиска книг
+@app.route("/books/search", methods=['GET'])
+def search_books():
+    query = request.args.get('query', '')
+    app.logger.info(f"Вызван endpoint /books/search с запросом: {query}")
+    session = Session()
+    try:
+        books = session.query(Book).filter(
+            or_(
+                Book.title.ilike(f'%{query}%'),
+                Book.authors.ilike(f'%{query}%'),
+                Book.categories.ilike(f'%{query}%')
+            )
+        ).all()
+        books_list = [book.as_dict() for book in books]
+        return jsonify(books_list), 200
+    except Exception as e:
+        app.logger.error(f"Ошибка при поиске книг: {e}")
+        return jsonify({"error": "Internal server error"}), 500
+    finally:
+        session.close()
+        
 # Запуск импорта данных при старте приложения, если файл существует
 if os.environ.get('IMPORT_CSV_ON_STARTUP', 'False') == 'True':
     import_data_from_csv()
