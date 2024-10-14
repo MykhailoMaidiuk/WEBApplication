@@ -53,7 +53,7 @@ POSTGRES_DB=postgres
 CB_SERVER_HOST=localhost
 CB_SERVER_PORT=8978
 ```
-### 3. **Get Books**
+### **Get Books**
 
 - **URL:** `/books`
 - **Method:** `GET`
