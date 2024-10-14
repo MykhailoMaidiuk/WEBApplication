@@ -42,6 +42,45 @@ A full-stack web application that allows users to browse and search for books. T
 - **Others:**
   - DBeaver (SQL Client)
 
+## Environment Variables
+
+Create a `.env` file in the root directory of the project and define the following variables:
+
+```env
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=****
+POSTGRES_DB=postgres
+CB_SERVER_HOST=localhost
+CB_SERVER_PORT=8978
+```
+### 3. **Get Books**
+
+- **URL:** `/books`
+- **Method:** `GET`
+- **Description:** Retrieves a list of all books.
+- **Response:**
+
+  ```json
+  [
+    {
+      "isbn13": "9781556434952",
+      "isbn10": "1556434952",
+      "title": "Empire 2.0",
+      "subtitle": "A Modest Proposal for a United States of the West",
+      "authors": "Régis Debray",
+      "categories": "Political Science",
+      "thumbnail": "http://example.com/image.jpg",
+      "description": "Description of the book",
+      "published_year": 2004,
+      "average_rating": 4.75,
+      "num_pages": 144,
+      "ratings_count": 4
+    },
+    ...
+  ]
+
+
+
 ## Prerequisites
 
 - [Docker](https://www.docker.com/get-started) installed on your machine.
@@ -53,4 +92,4 @@ A full-stack web application that allows users to browse and search for books. T
 
    ```bash
    git clone https://github.com/yourusername/book-catalog.git](https://github.com/MykhailoMaidiuk/WEBApplication/tree/mykhailodev
-   cd book-catalog
+   cd book-catalog ```
