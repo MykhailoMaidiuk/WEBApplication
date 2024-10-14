@@ -10,6 +10,7 @@ services:
       - "8009:8009"
     volumes:
       - ./backend/logs:/usr/src/app/logs
+      - ./backend/data_mock.csv:/usr/src/app/data_mock.csv  # Монтирование файла CSV
     networks:
       - cdb-network
     environment:
@@ -17,6 +18,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: db
+      IMPORT_CSV_ON_STARTUP: 'True'  # Переменная окружения для импорта CSV
     depends_on:
       - db
 
@@ -24,6 +26,8 @@ services:
     container_name: sk10-frontend
     build:
       context: ./frontend
+      args:
+        - REACT_APP_API_URL=http://backend:8009  # Используем имя сервиса бэкенда
     ports:
       - "3009:80"
     volumes:

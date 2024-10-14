@@ -105,3 +105,84 @@
 2024-10-13 17:50:05,555 INFO 172.20.0.1 - - [13/Oct/2024 17:50:05] "GET / HTTP/1.1" 200 -
 2024-10-13 18:10:57,398 ERROR 172.20.0.1 - - [13/Oct/2024 18:10:57] code 400, message Bad request version ('À\x14À')
 2024-10-13 18:10:57,399 INFO 172.20.0.1 - - [13/Oct/2024 18:10:57] "[31m[1m\x16\x03\x01\x00{\x01\x00\x00w\x03\x03Ì![×Ð ¾G\x00Ù»\x1d\x92\x021Ce0`º\x9e\x8fM\x1b´"§­2âÉ\x7f\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À[0m" 400 -
+2024-10-14 19:11:09,541 INFO Application is starting
+2024-10-14 19:11:09,541 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 19:11:09,667 INFO Database tables created
+2024-10-14 19:11:09,679 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 19:11:09,680 INFO [33mPress CTRL+C to quit[0m
+2024-10-14 19:11:48,061 INFO HelloWorld endpoint was called
+2024-10-14 19:11:48,074 INFO 172.20.0.1 - - [14/Oct/2024 19:11:48] "GET / HTTP/1.1" 200 -
+2024-10-14 19:24:43,718 INFO Приложение запускается
+2024-10-14 19:24:43,718 INFO Настройки базы данных: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 19:24:43,964 INFO Таблицы базы данных созданы
+2024-10-14 19:24:44,008 INFO Удалено 1 старых записей
+2024-10-14 19:24:44,015 ERROR Ошибка при импорте данных: 'utf-8' codec can't decode byte 0xe9 in position 1183: invalid continuation byte
+2024-10-14 19:24:44,022 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 19:24:44,022 INFO [33mPress CTRL+C to quit[0m
+2024-10-14 19:24:46,843 INFO Вызван endpoint HelloWorld
+2024-10-14 19:24:46,845 INFO 172.20.0.1 - - [14/Oct/2024 19:24:46] "GET / HTTP/1.1" 200 -
+2024-10-14 19:25:05,017 INFO Вызван endpoint /books
+2024-10-14 19:25:05,062 INFO 172.20.0.1 - - [14/Oct/2024 19:25:05] "GET /books HTTP/1.1" 200 -
+2024-10-14 19:31:12,031 INFO Приложение запускается
+2024-10-14 19:31:12,032 INFO Настройки базы данных: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 19:31:12,102 INFO Таблицы базы данных созданы
+2024-10-14 19:31:12,108 INFO Удалено 1 старых записей
+2024-10-14 19:31:12,111 ERROR Ошибка при импорте данных: 'utf-8' codec can't decode byte 0xe9 in position 1183: invalid continuation byte
+2024-10-14 19:31:12,118 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 19:31:12,119 INFO [33mPress CTRL+C to quit[0m
+2024-10-14 19:31:15,639 INFO Вызван endpoint HelloWorld
+2024-10-14 19:31:15,641 INFO 172.20.0.1 - - [14/Oct/2024 19:31:15] "GET / HTTP/1.1" 200 -
+2024-10-14 19:31:21,821 INFO Вызван endpoint /books
+2024-10-14 19:31:21,847 INFO 172.20.0.1 - - [14/Oct/2024 19:31:21] "GET /books HTTP/1.1" 200 -
+2024-10-14 19:33:49,961 INFO Приложение запускается
+2024-10-14 19:33:49,962 INFO Настройки базы данных: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 19:33:50,111 INFO Таблицы базы данных созданы
+2024-10-14 19:33:50,119 INFO Удалено 1 старых записей
+2024-10-14 19:33:50,137 INFO Данные из CSV успешно импортированы
+2024-10-14 19:33:50,142 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 19:33:50,142 INFO [33mPress CTRL+C to quit[0m
+2024-10-14 19:34:02,672 INFO Вызван endpoint HelloWorld
+2024-10-14 19:34:02,675 INFO 172.20.0.1 - - [14/Oct/2024 19:34:02] "GET / HTTP/1.1" 200 -
+2024-10-14 19:34:05,806 INFO 172.20.0.1 - - [14/Oct/2024 19:34:05] "[33mGET /api/books HTTP/1.1[0m" 404 -
+2024-10-14 19:34:21,367 INFO Вызван endpoint /books
+2024-10-14 19:34:21,387 INFO 172.20.0.1 - - [14/Oct/2024 19:34:21] "GET /books HTTP/1.1" 200 -
+2024-10-14 19:36:12,136 INFO Приложение запускается
+2024-10-14 19:36:12,136 INFO Настройки базы данных: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 19:36:12,224 INFO Таблицы базы данных созданы
+2024-10-14 19:36:12,233 INFO Удалено 4 старых записей
+2024-10-14 19:36:12,244 INFO Данные из CSV успешно импортированы
+2024-10-14 19:36:12,251 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 19:36:12,255 INFO [33mPress CTRL+C to quit[0m
+2024-10-14 19:36:14,319 INFO Вызван endpoint HelloWorld
+2024-10-14 19:36:14,321 INFO 172.20.0.1 - - [14/Oct/2024 19:36:14] "GET / HTTP/1.1" 200 -
+2024-10-14 19:36:18,677 INFO Вызван endpoint /books
+2024-10-14 19:36:18,685 INFO 172.20.0.1 - - [14/Oct/2024 19:36:18] "GET /books HTTP/1.1" 200 -
+2024-10-14 19:41:07,333 INFO Приложение запускается
+2024-10-14 19:41:07,334 INFO Настройки базы данных: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 19:41:07,534 INFO Таблицы базы данных созданы
+2024-10-14 19:41:07,550 INFO Удалено 4 старых записей
+2024-10-14 19:41:07,556 ERROR Ошибка при импорте данных: 'utf-8' codec can't decode byte 0xe9 in position 1183: invalid continuation byte
+2024-10-14 19:41:07,570 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 19:41:07,571 INFO [33mPress CTRL+C to quit[0m
+2024-10-14 19:41:11,275 INFO Вызван endpoint HelloWorld
+2024-10-14 19:41:11,280 INFO 172.20.0.1 - - [14/Oct/2024 19:41:11] "GET / HTTP/1.1" 200 -
+2024-10-14 19:41:16,102 INFO Вызван endpoint /books
+2024-10-14 19:41:16,109 INFO 172.20.0.1 - - [14/Oct/2024 19:41:16] "GET /books HTTP/1.1" 200 -
