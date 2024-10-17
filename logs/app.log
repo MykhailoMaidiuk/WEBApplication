@@ -1,0 +1,74 @@
+2024-10-14 11:22:24,362 INFO Application is starting
+2024-10-14 11:22:24,362 INFO Database settings: USER=postgres, HOST=db, PORT=5432, DB=postgres
+2024-10-14 11:22:27,243 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:22:27,243 INFO Retrying in 5 seconds... (Attempt 1/5)
+2024-10-14 11:22:34,984 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:22:34,985 INFO Retrying in 5 seconds... (Attempt 2/5)
+2024-10-14 11:22:42,715 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:22:42,721 INFO Retrying in 5 seconds... (Attempt 3/5)
+2024-10-14 11:22:50,448 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:22:50,448 INFO Retrying in 5 seconds... (Attempt 4/5)
+2024-10-14 11:22:58,186 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:22:58,186 ERROR Failed to create database tables after several attempts
+2024-10-14 11:25:27,062 INFO Application is starting
+2024-10-14 11:25:27,062 INFO Database settings: USER=postgres, HOST=db, PORT=5432, DB=postgres
+2024-10-14 11:25:29,898 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:25:29,898 INFO Retrying in 5 seconds... (Attempt 1/5)
+2024-10-14 11:25:37,608 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:25:37,608 INFO Retrying in 5 seconds... (Attempt 2/5)
+2024-10-14 11:25:45,351 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:25:45,353 INFO Retrying in 5 seconds... (Attempt 3/5)
+2024-10-14 11:25:53,085 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:25:53,086 INFO Retrying in 5 seconds... (Attempt 4/5)
+2024-10-14 11:26:00,848 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:26:00,848 ERROR Failed to create database tables after several attempts
+2024-10-14 11:28:14,013 INFO Application is starting
+2024-10-14 11:28:14,013 INFO Database settings: USER=postgres, HOST=db, PORT=5432, DB=postgres
+2024-10-14 11:28:16,844 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:28:16,844 INFO Retrying in 5 seconds... (Attempt 1/5)
+2024-10-14 11:28:24,618 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:28:24,618 INFO Retrying in 5 seconds... (Attempt 2/5)
+2024-10-14 11:28:32,392 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:28:32,392 INFO Retrying in 5 seconds... (Attempt 3/5)
+2024-10-14 11:28:40,139 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:28:40,139 INFO Retrying in 5 seconds... (Attempt 4/5)
+2024-10-14 11:28:47,867 ERROR Error creating tables: (psycopg2.OperationalError) could not translate host name "db" to address: ???? ???? ??????????. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-10-14 11:28:47,867 ERROR Failed to create database tables after several attempts
+2024-10-14 11:29:59,936 INFO Application is starting
+2024-10-14 11:29:59,936 ERROR CSV file not found
+2024-10-14 11:30:30,380 INFO Application is starting
+2024-10-14 11:30:30,380 ERROR CSV file not found
+2024-10-14 11:30:44,898 INFO Application is starting
+2024-10-14 11:30:44,898 ERROR CSV file not found
+2024-10-14 11:33:52,519 INFO Application is starting
+2024-10-14 11:33:52,519 ERROR CSV file not found
