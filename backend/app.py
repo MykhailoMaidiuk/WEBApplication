@@ -3,6 +3,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import logging
 import os
+from logging.handlers import RotatingFileHandler  # Импортируем RotatingFileHandler
+import sys
 from sqlalchemy import (
     create_engine,
     Column,
@@ -15,7 +17,6 @@ from sqlalchemy import (
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
-import sys
 import time
 import csv
 
@@ -27,14 +28,24 @@ CORS(app)  # Enable CORS for all routes
 log_directory = os.path.join(os.getcwd(), 'logs')
 os.makedirs(log_directory, exist_ok=True)
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s %(levelname)s %(message)s',
-    handlers=[
-        logging.FileHandler(os.path.join(log_directory, 'app.log')),
-        logging.StreamHandler(sys.stdout),
-    ],
+# Настраиваем RotatingFileHandler
+rotating_handler = RotatingFileHandler(
+    os.path.join(log_directory, 'app.log'),
+    maxBytes=10 * 1024 * 1024,  # 10 МБ
+    backupCount=5  # Хранить до 5 резервных копий
 )
+
+rotating_handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+rotating_handler.setFormatter(formatter)
+
+# Настраиваем логирование в приложении Flask
+app.logger.addHandler(rotating_handler)
+app.logger.setLevel(logging.INFO)
+
+# Удаляем стандартный обработчик, если необходимо
+# Это может предотвратить дублирование логов
+# app.logger.removeHandler(logging.StreamHandler(sys.stdout))
 
 app.logger.info("Application is starting")
 
@@ -72,11 +83,11 @@ class Book(Base):
     authors = Column(String(), nullable=True)
     categories = Column(String(), nullable=True)
     thumbnail = Column(String(), nullable=True)
-    description = Column(Text, nullable=True)
-    published_year = Column(Integer, nullable=True)
-    average_rating = Column(Float, nullable=True)
-    num_pages = Column(Integer, nullable=True)
-    ratings_count = Column(Integer, nullable=True)
+    description = Column(Text(), nullable=True)
+    published_year = Column(Integer(), nullable=True)
+    average_rating = Column(Float(), nullable=True)
+    num_pages = Column(Integer(), nullable=True)
+    ratings_count = Column(Integer(), nullable=True)
 
     __table_args__ = (
         CheckConstraint('char_length(isbn13) = 13', name='check_isbn13_length'),
@@ -149,39 +160,45 @@ def receive_data():
         num_deleted = session.query(Book).delete()
         app.logger.info(f"Deleted {num_deleted} old records")
 
-        # Add new data
-        for item in data:
-            # Check required fields
-            required_fields = ['isbn13', 'isbn10', 'title']
-            for field in required_fields:
-                if field not in item or not item[field]:
-                    app.logger.error(f"Missing required field: {field}")
-                    session.rollback()
-                    return (
-                        jsonify({"error": f"Missing required field: {field}"}),
-                        400,
-                    )
+        added_records = 0
+        skipped_records = 0
 
-            # Create book instance
-            book = Book(
-                isbn13=item['isbn13'],
-                isbn10=item['isbn10'],
-                title=item['title'],
-                subtitle=item.get('subtitle'),
-                authors=item.get('authors'),
-                categories=item.get('categories'),
-                thumbnail=item.get('thumbnail'),
-                description=item.get('description'),
-                published_year=item.get('published_year'),
-                average_rating=item.get('average_rating'),
-                num_pages=item.get('num_pages'),
-                ratings_count=item.get('ratings_count'),
-            )
-            session.add(book)
+        for index, item in enumerate(data, start=1):
+            try:
+                # Check required fields
+                required_fields = ['isbn13', 'isbn10', 'title']
+                missing_fields = [field for field in required_fields if not item.get(field)]
+                if missing_fields:
+                    app.logger.error(f"Record {index}: Missing required fields: {', '.join(missing_fields)}. Skipping record.")
+                    skipped_records += 1
+                    continue
+
+                # Create book instance
+                book = Book(
+                    isbn13=item['isbn13'],
+                    isbn10=item['isbn10'],
+                    title=item['title'],
+                    subtitle=item.get('subtitle'),
+                    authors=item.get('authors'),
+                    categories=item.get('categories'),
+                    thumbnail=item.get('thumbnail'),
+                    description=item.get('description'),
+                    published_year=item.get('published_year'),
+                    average_rating=item.get('average_rating'),
+                    num_pages=item.get('num_pages'),
+                    ratings_count=item.get('ratings_count'),
+                )
+                session.add(book)
+                added_records += 1
+
+            except Exception as e:
+                app.logger.error(f"Record {index}: Error processing book: {e}. Skipping record.")
+                skipped_records += 1
+                continue  # Продолжаем обработку следующих записей
 
         session.commit()
-        app.logger.info(f"Added {len(data)} new records")
-        return jsonify({"message": "Data received and saved"}), 200
+        app.logger.info(f"Added {added_records} new records. Skipped {skipped_records} invalid records.")
+        return jsonify({"message": "Data received and saved", "added": added_records, "skipped": skipped_records}), 200
     except Exception as e:
         session.rollback()
         app.logger.error(f"Error processing data: {e}")
@@ -219,52 +236,67 @@ def import_data_from_csv():
         num_deleted = session.query(Book).delete()
         app.logger.info(f"Deleted {num_deleted} old records")
 
+        added_records = 0
+        skipped_records = 0
+
         with open(csv_file_path, 'r', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)
-            for row in reader:
+            for index, row in enumerate(reader, start=1):
                 if len(row) != 12:
-                    app.logger.error(f"Incorrect number of fields in row: {row}")
+                    app.logger.error(f"Record {index}: Incorrect number of fields ({len(row)}). Expected 12. Skipping record.")
+                    skipped_records += 1
                     continue
 
-                (
-                    isbn13,
-                    isbn10,
-                    title,
-                    subtitle,
-                    authors,
-                    categories,
-                    thumbnail,
-                    description,
-                    published_year,
-                    average_rating,
-                    num_pages,
-                    ratings_count,
-                ) = row
+                try:
+                    (
+                        isbn13,
+                        isbn10,
+                        title,
+                        subtitle,
+                        authors,
+                        categories,
+                        thumbnail,
+                        description,
+                        published_year,
+                        average_rating,
+                        num_pages,
+                        ratings_count,
+                    ) = row
 
-                book = Book(
-                    isbn13=isbn13.strip(),
-                    isbn10=isbn10.strip(),
-                    title=title.strip(),
-                    subtitle=subtitle.strip() if subtitle else None,
-                    authors=authors.strip() if authors else None,
-                    categories=categories.strip() if categories else None,
-                    thumbnail=thumbnail.strip() if thumbnail else None,
-                    description=description.strip() if description else None,
-                    published_year=int(published_year.strip())
-                    if published_year
-                    else None,
-                    average_rating=float(average_rating.strip())
-                    if average_rating
-                    else None,
-                    num_pages=int(num_pages.strip()) if num_pages else None,
-                    ratings_count=int(ratings_count.strip())
-                    if ratings_count
-                    else None,
-                )
-                session.add(book)
+                    # Проверка обязательных полей
+                    if not isbn13.strip() or not isbn10.strip() or not title.strip():
+                        app.logger.error(f"Record {index}: Missing required fields. Skipping record.")
+                        skipped_records += 1
+                        continue
+
+                    book = Book(
+                        isbn13=isbn13.strip(),
+                        isbn10=isbn10.strip(),
+                        title=title.strip(),
+                        subtitle=subtitle.strip() if subtitle else None,
+                        authors=authors.strip() if authors else None,
+                        categories=categories.strip() if categories else None,
+                        thumbnail=thumbnail.strip() if thumbnail else None,
+                        description=description.strip() if description else None,
+                        published_year=int(published_year.strip()) if published_year.strip() else None,
+                        average_rating=float(average_rating.strip()) if average_rating.strip() else None,
+                        num_pages=int(num_pages.strip()) if num_pages.strip() else None,
+                        ratings_count=int(ratings_count.strip()) if ratings_count.strip() else None,
+                    )
+                    session.add(book)
+                    added_records += 1
+
+                except ValueError as ve:
+                    app.logger.error(f"Record {index}: Value conversion error: {ve}. Skipping record.")
+                    skipped_records += 1
+                    continue
+                except Exception as e:
+                    app.logger.error(f"Record {index}: Unexpected error: {e}. Skipping record.")
+                    skipped_records += 1
+                    continue
 
         session.commit()
-        app.logger.info("Data from CSV successfully imported")
+        app.logger.info(f"Imported data from CSV: {added_records} added, {skipped_records} skipped.")
     except Exception as e:
         session.rollback()
         app.logger.error(f"Error importing data: {e}")

@@ -9,8 +9,8 @@ services:
     ports:
       - "8009:8009"
     volumes:
-      - ./backend/logs:/usr/src/app/logs
-      - ./backend/data_mock.csv:/usr/src/app/data_mock.csv  # Монтирование файла CSV
+      - /home/cerny/logs/sk10:/usr/src/app/logs
+      - ./backend/data_mock.csv:/usr/src/app/data_mock.csv  
     networks:
       - cdb-network
     environment:
@@ -18,7 +18,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: db
-      IMPORT_CSV_ON_STARTUP: 'True'  # Переменная окружения для импорта CSV
+      IMPORT_CSV_ON_STARTUP: 'True' 
     depends_on:
       - db
 
@@ -27,7 +27,7 @@ services:
     build:
       context: ./frontend
       args:
-        - REACT_APP_API_URL=http://backend:8009  # Используем имя сервиса бэкенда
+        - REACT_APP_API_URL=http://backend:8009  
     ports:
       - "3009:80"
     volumes:

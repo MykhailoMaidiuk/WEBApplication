@@ -483,3 +483,33 @@
 2024-10-17 18:28:05,744 INFO [33mPress CTRL+C to quit[0m
 2024-10-17 18:28:15,107 INFO Endpoint /books was called
 2024-10-17 18:28:15,162 INFO 172.20.0.1 - - [17/Oct/2024 18:28:15] "GET /books HTTP/1.1" 200 -
+2024-10-17 19:16:05,688 INFO Application is starting
+2024-10-17 19:16:05,689 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-17 19:16:05,828 INFO Database tables created
+2024-10-17 19:16:05,869 INFO Deleted 816 old records
+2024-10-17 19:16:06,285 INFO Data from CSV successfully imported
+2024-10-17 19:16:06,292 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-17 19:16:06,293 INFO [33mPress CTRL+C to quit[0m
+2024-10-17 19:16:43,530 INFO Endpoint /books was called
+2024-10-17 19:16:43,591 INFO 172.20.0.1 - - [17/Oct/2024 19:16:43] "GET /books HTTP/1.1" 200 -
+2024-10-17 19:20:15,206 INFO Endpoint /books was called
+2024-10-17 19:20:15,271 INFO 172.20.0.1 - - [17/Oct/2024 19:20:15] "GET /books HTTP/1.1" 200 -
+2024-10-17 19:20:22,227 INFO Endpoint /books/search called with query: ivam
+2024-10-17 19:20:22,238 INFO 172.20.0.1 - - [17/Oct/2024 19:20:22] "GET /books/search?query=ivam HTTP/1.1" 200 -
+2024-10-17 19:20:25,877 INFO Endpoint /books/search called with query: ivan
+2024-10-17 19:20:25,882 INFO 172.20.0.1 - - [17/Oct/2024 19:20:25] "GET /books/search?query=ivan HTTP/1.1" 200 -
+2024-10-17 19:20:31,701 INFO Endpoint /books/search called with query: myroslav
+2024-10-17 19:20:31,706 INFO 172.20.0.1 - - [17/Oct/2024 19:20:31] "GET /books/search?query=myroslav HTTP/1.1" 200 -
+2024-10-17 19:20:34,757 INFO Endpoint /books/search called with query: ivan
+2024-10-17 19:20:34,762 INFO 172.20.0.1 - - [17/Oct/2024 19:20:34] "GET /books/search?query=ivan HTTP/1.1" 200 -
+2024-10-17 19:25:53,651 INFO Endpoint /books was called
+2024-10-17 19:25:53,704 INFO 172.20.0.1 - - [17/Oct/2024 19:25:53] "GET /books HTTP/1.1" 200 -
+2024-10-17 19:28:04,866 INFO Endpoint /books/search called with query: main kampf
+2024-10-17 19:28:04,871 INFO 172.20.0.1 - - [17/Oct/2024 19:28:04] "GET /books/search?query=main%20kampf HTTP/1.1" 200 -
+2024-10-17 19:28:16,147 INFO Endpoint /books/search called with query: main kampf
+2024-10-17 19:28:16,152 INFO 172.20.0.1 - - [17/Oct/2024 19:28:16] "GET /books/search?query=main%20kampf HTTP/1.1" 200 -
+2024-10-17 19:28:24,545 INFO Endpoint /books/search called with query: mein kampf
+2024-10-17 19:28:24,550 INFO 172.20.0.1 - - [17/Oct/2024 19:28:24] "GET /books/search?query=mein%20kampf HTTP/1.1" 200 -
