@@ -336,3 +336,138 @@
 2024-10-14 20:51:34,702 INFO 172.20.0.1 - - [14/Oct/2024 20:51:34] "GET / HTTP/1.1" 200 -
 2024-10-14 20:51:39,632 INFO Endpoint /books was called
 2024-10-14 20:51:39,664 INFO 172.20.0.1 - - [14/Oct/2024 20:51:39] "GET /books HTTP/1.1" 200 -
+2024-10-14 20:53:41,335 INFO Application is starting
+2024-10-14 20:53:41,335 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-14 20:53:41,460 INFO Database tables created
+2024-10-14 20:53:41,490 INFO Deleted 816 old records
+2024-10-14 20:53:41,862 INFO Data from CSV successfully imported
+2024-10-14 20:53:41,870 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-14 20:53:41,870 INFO [33mPress CTRL+C to quit[0m
+2024-10-14 20:53:53,129 INFO Endpoint HelloWorld was called
+2024-10-14 20:53:53,132 INFO 172.20.0.1 - - [14/Oct/2024 20:53:53] "GET / HTTP/1.1" 200 -
+2024-10-14 20:54:21,491 INFO Endpoint /books was called
+2024-10-14 20:54:21,548 INFO 172.20.0.1 - - [14/Oct/2024 20:54:21] "GET /books HTTP/1.1" 200 -
+2024-10-14 20:54:28,839 INFO Endpoint /books was called
+2024-10-14 20:54:28,902 INFO 172.20.0.1 - - [14/Oct/2024 20:54:28] "GET /books HTTP/1.1" 200 -
+2024-10-14 20:54:35,238 INFO Endpoint /books/search called with query: Drama
+2024-10-14 20:54:35,250 INFO 172.20.0.1 - - [14/Oct/2024 20:54:35] "GET /books/search?query=Drama HTTP/1.1" 200 -
+2024-10-14 20:54:42,895 INFO Endpoint /books was called
+2024-10-14 20:54:42,922 INFO 172.20.0.1 - - [14/Oct/2024 20:54:42] "GET /books HTTP/1.1" 200 -
+2024-10-15 09:56:00,599 INFO Application is starting
+2024-10-15 09:56:00,599 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-15 09:56:00,695 INFO Database tables created
+2024-10-15 09:56:00,706 INFO Deleted 816 old records
+2024-10-15 09:56:00,896 INFO Data from CSV successfully imported
+2024-10-15 09:56:00,900 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-15 09:56:00,900 INFO [33mPress CTRL+C to quit[0m
+2024-10-15 09:56:20,260 INFO Endpoint /books was called
+2024-10-15 09:56:20,319 INFO 172.20.0.1 - - [15/Oct/2024 09:56:20] "GET /books HTTP/1.1" 200 -
+2024-10-15 09:56:23,026 INFO Endpoint HelloWorld was called
+2024-10-15 09:56:23,027 INFO 172.20.0.1 - - [15/Oct/2024 09:56:23] "GET / HTTP/1.1" 200 -
+2024-10-15 09:56:23,213 INFO 172.20.0.1 - - [15/Oct/2024 09:56:23] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-10-15 09:56:27,046 INFO Endpoint /books was called
+2024-10-15 09:56:27,070 INFO 172.20.0.1 - - [15/Oct/2024 09:56:27] "GET /books HTTP/1.1" 200 -
+2024-10-15 09:57:26,807 INFO Endpoint /books/search called with query: Comics & Graphic Novels
+2024-10-15 09:57:26,818 INFO 172.20.0.1 - - [15/Oct/2024 09:57:26] "GET /books/search?query=Comics%20%26%20Graphic%20Novels HTTP/1.1" 200 -
+2024-10-15 09:57:33,842 INFO Endpoint /books/search called with query: Things
+2024-10-15 09:57:33,846 INFO 172.20.0.1 - - [15/Oct/2024 09:57:33] "GET /books/search?query=Things HTTP/1.1" 200 -
+2024-10-15 09:57:39,814 INFO Endpoint /books was called
+2024-10-15 09:57:39,850 INFO 172.20.0.1 - - [15/Oct/2024 09:57:39] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:02:16,333 INFO Application is starting
+2024-10-15 13:02:16,333 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-15 13:02:16,419 INFO Database tables created
+2024-10-15 13:02:16,430 INFO Deleted 816 old records
+2024-10-15 13:02:16,733 INFO Data from CSV successfully imported
+2024-10-15 13:02:16,740 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-15 13:02:16,741 INFO [33mPress CTRL+C to quit[0m
+2024-10-15 13:02:59,462 INFO Endpoint HelloWorld was called
+2024-10-15 13:02:59,466 INFO 172.20.0.1 - - [15/Oct/2024 13:02:59] "GET / HTTP/1.1" 200 -
+2024-10-15 13:02:59,650 INFO 172.20.0.1 - - [15/Oct/2024 13:02:59] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-10-15 13:03:03,561 INFO Endpoint /books was called
+2024-10-15 13:03:03,597 INFO 172.20.0.1 - - [15/Oct/2024 13:03:03] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:03:12,203 INFO Endpoint /books was called
+2024-10-15 13:03:12,238 INFO 172.20.0.1 - - [15/Oct/2024 13:03:12] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:03:32,699 INFO Endpoint /books/search called with query: Biography & Autobiography
+2024-10-15 13:03:32,710 INFO 172.20.0.1 - - [15/Oct/2024 13:03:32] "GET /books/search?query=Biography%20%26%20Autobiography HTTP/1.1" 200 -
+2024-10-15 13:03:36,270 INFO Endpoint /books was called
+2024-10-15 13:03:36,304 INFO 172.20.0.1 - - [15/Oct/2024 13:03:36] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:04:01,837 INFO Endpoint /books/search called with query: Smart Love
+2024-10-15 13:04:01,842 INFO 172.20.0.1 - - [15/Oct/2024 13:04:01] "GET /books/search?query=Smart%20Love HTTP/1.1" 200 -
+2024-10-15 13:04:03,382 INFO Endpoint /books was called
+2024-10-15 13:04:03,414 INFO 172.20.0.1 - - [15/Oct/2024 13:04:03] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:08:31,002 INFO Endpoint /books/search called with query: Fiction
+2024-10-15 13:08:31,013 INFO 172.20.0.1 - - [15/Oct/2024 13:08:31] "GET /books/search?query=Fiction HTTP/1.1" 200 -
+2024-10-15 13:08:44,857 INFO Endpoint /books/search called with query: A Saucer of Loneliness
+2024-10-15 13:08:44,862 INFO 172.20.0.1 - - [15/Oct/2024 13:08:44] "GET /books/search?query=A%20Saucer%20of%20Loneliness HTTP/1.1" 200 -
+2024-10-15 13:08:49,550 INFO Endpoint /books was called
+2024-10-15 13:08:49,614 INFO 172.20.0.1 - - [15/Oct/2024 13:08:49] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:09:03,466 INFO Endpoint /books/search called with query: foot
+2024-10-15 13:09:03,471 INFO 172.20.0.1 - - [15/Oct/2024 13:09:03] "GET /books/search?query=foot HTTP/1.1" 200 -
+2024-10-15 13:09:06,987 INFO Endpoint /books was called
+2024-10-15 13:09:07,035 INFO 172.20.0.1 - - [15/Oct/2024 13:09:07] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:09:11,588 INFO Endpoint /books/search called with query: James 
+2024-10-15 13:09:11,594 INFO 172.20.0.1 - - [15/Oct/2024 13:09:11] "GET /books/search?query=James%20 HTTP/1.1" 200 -
+2024-10-15 13:09:57,745 INFO Endpoint /books was called
+2024-10-15 13:09:57,788 INFO 172.20.0.1 - - [15/Oct/2024 13:09:57] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:12:01,547 INFO Endpoint /books/search called with query: Health & Fitness
+2024-10-15 13:12:01,553 INFO 172.20.0.1 - - [15/Oct/2024 13:12:01] "GET /books/search?query=Health%20%26%20Fitness HTTP/1.1" 200 -
+2024-10-15 13:12:05,319 INFO Endpoint /books was called
+2024-10-15 13:12:05,366 INFO 172.20.0.1 - - [15/Oct/2024 13:12:05] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:12:12,048 INFO Endpoint /books/search called with query: Political Science Fiction
+2024-10-15 13:12:12,054 INFO 172.20.0.1 - - [15/Oct/2024 13:12:12] "GET /books/search?query=Political%20Science%20Fiction HTTP/1.1" 200 -
+2024-10-15 13:12:14,000 INFO Endpoint /books was called
+2024-10-15 13:12:14,049 INFO 172.20.0.1 - - [15/Oct/2024 13:12:14] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:18:26,339 INFO Endpoint /books was called
+2024-10-15 13:18:26,395 INFO 172.20.0.1 - - [15/Oct/2024 13:18:26] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:46:55,159 INFO Endpoint /books was called
+2024-10-15 13:46:55,307 INFO 172.20.0.1 - - [15/Oct/2024 13:46:55] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:47:11,029 INFO Endpoint /books/search called with query: бебра
+2024-10-15 13:47:11,035 INFO 172.20.0.1 - - [15/Oct/2024 13:47:11] "GET /books/search?query=бебра HTTP/1.1" 200 -
+2024-10-15 13:47:13,158 INFO Endpoint /books was called
+2024-10-15 13:47:13,190 INFO 172.20.0.1 - - [15/Oct/2024 13:47:13] "GET /books HTTP/1.1" 200 -
+2024-10-15 13:58:32,293 INFO Endpoint /books was called
+2024-10-15 13:58:32,338 INFO 172.20.0.1 - - [15/Oct/2024 13:58:32] "GET /books HTTP/1.1" 200 -
+2024-10-15 14:00:00,808 INFO Endpoint /books/search called with query: Healing with Whole Foods
+2024-10-15 14:00:00,814 INFO 172.20.0.1 - - [15/Oct/2024 14:00:00] "GET /books/search?query=Healing%20with%20Whole%20Foods HTTP/1.1" 200 -
+2024-10-15 14:00:01,984 INFO Endpoint /books was called
+2024-10-15 14:00:02,017 INFO 172.20.0.1 - - [15/Oct/2024 14:00:02] "GET /books HTTP/1.1" 200 -
+2024-10-15 14:00:09,089 INFO Endpoint /books/search called with query: Performing Arts
+2024-10-15 14:00:09,094 INFO 172.20.0.1 - - [15/Oct/2024 14:00:09] "GET /books/search?query=Performing%20Arts HTTP/1.1" 200 -
+2024-10-15 14:00:13,119 INFO Endpoint /books was called
+2024-10-15 14:00:13,164 INFO 172.20.0.1 - - [15/Oct/2024 14:00:13] "GET /books HTTP/1.1" 200 -
+2024-10-15 14:00:20,296 INFO Endpoint /books/search called with query: Performing
+2024-10-15 14:00:20,300 INFO 172.20.0.1 - - [15/Oct/2024 14:00:20] "GET /books/search?query=Performing HTTP/1.1" 200 -
+2024-10-15 14:00:25,745 INFO Endpoint /books/search called with query: Adventures 
+2024-10-15 14:00:25,750 INFO 172.20.0.1 - - [15/Oct/2024 14:00:25] "GET /books/search?query=Adventures%20 HTTP/1.1" 200 -
+2024-10-15 14:00:32,368 INFO Endpoint /books was called
+2024-10-15 14:00:32,403 INFO 172.20.0.1 - - [15/Oct/2024 14:00:32] "GET /books HTTP/1.1" 200 -
+2024-10-15 14:02:16,492 INFO Endpoint /books/search called with query: Biography & Autobiography Fiction
+2024-10-15 14:02:16,498 INFO 172.20.0.1 - - [15/Oct/2024 14:02:16] "GET /books/search?query=Biography%20%26%20Autobiography%20Fiction HTTP/1.1" 200 -
+2024-10-15 14:02:18,274 INFO Endpoint /books was called
+2024-10-15 14:02:18,305 INFO 172.20.0.1 - - [15/Oct/2024 14:02:18] "GET /books HTTP/1.1" 200 -
+2024-10-16 17:48:05,401 INFO Application is starting
+2024-10-16 17:48:05,402 INFO Database settings: USER=user, HOST=db, PORT=5432, DB=my_db
+2024-10-16 17:48:05,496 INFO Database tables created
+2024-10-16 17:48:05,506 INFO Deleted 816 old records
+2024-10-16 17:48:05,871 INFO Data from CSV successfully imported
+2024-10-16 17:48:05,883 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8009
+ * Running on http://172.20.0.5:8009
+2024-10-16 17:48:05,889 INFO [33mPress CTRL+C to quit[0m
+2024-10-16 17:48:09,307 INFO Endpoint HelloWorld was called
+2024-10-16 17:48:09,314 INFO 172.20.0.1 - - [16/Oct/2024 17:48:09] "GET / HTTP/1.1" 200 -
+2024-10-16 17:48:09,554 INFO 172.20.0.1 - - [16/Oct/2024 17:48:09] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-10-16 17:48:13,852 INFO Endpoint /books was called
+2024-10-16 17:48:13,905 INFO 172.20.0.1 - - [16/Oct/2024 17:48:13] "GET /books HTTP/1.1" 200 -
+2024-10-16 17:48:18,051 INFO Endpoint /books/search called with query: Biography & Autobiography
+2024-10-16 17:48:18,060 INFO 172.20.0.1 - - [16/Oct/2024 17:48:18] "GET /books/search?query=Biography%20%26%20Autobiography HTTP/1.1" 200 -
