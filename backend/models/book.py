@@ -6,9 +6,7 @@ from sqlalchemy import (
     Text,
     CheckConstraint,
 )
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
+from database import Base  # Import Base from database package
 
 class Book(Base):
     __tablename__ = 'books'
