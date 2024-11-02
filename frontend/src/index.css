@@ -1,0 +1,314 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #1a191f;
+  font-family: "Open Sans", sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  height: 60px;
+}
+
+.header__logo {
+  font-size: 32px;
+  text-decoration: none;
+  color: #ffffff;
+  margin-right: 20px;
+}
+
+.header__search {
+  padding: 8px;
+  border: 2px solid #1a191f;
+  border-radius: 5px;
+  outline: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.header__search-space {
+  width: 200px;
+  height: 40px;
+  display: inline-block;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+}
+
+.auth-links {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.auth-links a {
+  margin-right: 5px;
+  margin-left: 5px;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.auth-links a:last-child {
+  margin-right: 0;
+}
+
+.auth-links span{
+  color: #ffffff;
+}
+
+.books {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.book {
+  width: 240px;
+  margin: 10px;
+  position: relative;
+}
+
+.book__cover-inner {
+  position: relative;
+  height: 360px;
+}
+
+.book__cover {
+  max-width: 100%;
+  height: 100%;
+}
+
+.book__cover--darkened {
+  background-color: #000000;
+  opacity: 0.1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.book__cover--darkened:hover {
+  background-color: grey;
+  cursor: pointer;
+}
+
+.book__info {
+  padding: 10px 0px;
+}
+
+.book__title {
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.book__author {
+  font-size: 14px;
+  font-style: italic;
+  color: #ffffff;
+}
+
+.book__category {
+  font-size: 14px;
+  color: #ffd80e;
+}
+
+.book__average {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 0;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1a191f;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.book__average--green {
+  border: 1px solid green;
+}
+
+.book__average--orange {
+  border: 1px solid orange;
+}
+
+.book__average--red {
+  border: 1px solid red;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  margin: 20px 0;
+}
+
+.pagination button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  color: #1a191f;
+  border: 2px solid #1a191f;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.user-greeting {
+  color: #ffffff;
+  margin-right: 20px;
+}
+
+.reg-log {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.reg-log h2 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.reg-log form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 175px;
+}
+
+.reg-log input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.reg-log button {
+  padding: 10px;
+  color: #1a191f;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reg-log button:hover {
+  background-color: #f0f0f0;
+}
+
+.reg-log p {
+  margin-top: 10px;
+}
+
+/* Center the content and apply consistent dark theme styling */
+.book-detail {
+  text-align: left; /* Align text to the left */
+  color: white;
+  padding: 20px;
+}
+
+.book-detail__back-button {
+  margin-bottom: 20px;
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.book-detail__content {
+  display: flex; /* Use flexbox for layout */
+  justify-content: flex-start; /* Align items to the start */
+  align-items: flex-start; /* Align items to the start */
+}
+
+.book-detail__cover-container {
+  margin-left: 20px; /* Add some margin for spacing */
+}
+
+.book-detail__cover {
+  width: 300px; /* Set a fixed width for the cover */
+  height: auto; /* Maintain aspect ratio */
+  padding-right: 20px;
+}
+
+.book-detail__title {
+  font-size: 2em;
+  color: white;
+  font-weight: bold;
+}
+
+.book-detail__subtitle {
+  font-size: 1.2em;
+  color: #ccc;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.book-detail__cover img {
+  max-width: 200px;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.book-detail__info {
+  color: white;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.book-detail__description-box {
+  max-width: 100%;
+  padding: 15px;
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3f;
+  border-radius: 8px;
+}
+
+.book-detail__description-box h3 {
+  color: #ffd80e;
+}
+
+.book-detail__description {
+  color: white;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 20px auto; /* Center the description box */
+  font-style: normal;
+}
+
+/* New spacing for the description */
+.book-detail__description {
+  margin-top: 20px; /* Add spacing above the description */
+}
