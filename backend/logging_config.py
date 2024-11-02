@@ -1,23 +1,21 @@
+# logging_config.py
 import logging
 import os
 from logging.handlers import RotatingFileHandler
+from config import LOG_DIRECTORY
 
 def setup_logging(app):
-    # Configure logging
-    log_directory = os.path.join(os.getcwd(), 'logs')
-    os.makedirs(log_directory, exist_ok=True)
+    if not os.path.exists(LOG_DIRECTORY):
+        os.makedirs(LOG_DIRECTORY)
 
-    # Setup RotatingFileHandler
-    rotating_handler = RotatingFileHandler(
-        os.path.join(log_directory, 'app.log'),
-        maxBytes=10 * 1024 * 1024,  # 10 MB
-        backupCount=5  # Keep up to 5 backup files
+    log_file = os.path.join(LOG_DIRECTORY, 'app.log')
+
+    handler = RotatingFileHandler(log_file, maxBytes=100000, backupCount=10)
+    formatter = logging.Formatter(
+        '%(asctime)s %(levelname)s in %(module)s: %(message)s'
     )
+    handler.setFormatter(formatter)
+    handler.setLevel(logging.INFO)
 
-    rotating_handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-    rotating_handler.setFormatter(formatter)
-
-    # Setup logging in Flask app
-    app.logger.addHandler(rotating_handler)
+    app.logger.addHandler(handler)
     app.logger.setLevel(logging.INFO)

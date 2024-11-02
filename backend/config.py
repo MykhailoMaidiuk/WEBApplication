@@ -12,3 +12,6 @@ DATABASE_URI = f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST
 
 # Log directory
 LOG_DIRECTORY = os.path.join(os.getcwd(), 'logs')
+
+# Secret key for Flask sessions
+SECRET_KEY = os.environ.get('SECRET_KEY', 'x101')  

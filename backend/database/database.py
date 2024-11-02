@@ -1,3 +1,4 @@
+# database/database.py
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session, declarative_base
 from config import DATABASE_URI
@@ -15,7 +16,7 @@ Session = scoped_session(SessionFactory)
 Base = declarative_base()
 
 def create_tables_with_retry(logger, retries=5, delay=5):
-    from models import Book  # Import models here to register them with Base
+    from models import Book, User  # Import models here to register them with Base
     for attempt in range(1, retries + 1):
         try:
             Base.metadata.create_all(engine)
