@@ -6,11 +6,11 @@ function Cart({ cartItems, toggleCart, removeFromCart }) {
     <div className="cart-overlay">
       <div className="cart">
         <button className="cart__close" onClick={toggleCart}>
-          Закрыть
+          Close
         </button>
-        <h2>Корзина</h2>
+        <h2>Cart</h2>
         {cartItems.length === 0 ? (
-          <p>Ваша корзина пуста</p>
+          <p>Add first book</p>
         ) : (
           <ul>
             {cartItems.map((item, index) => (
@@ -30,7 +30,7 @@ function Cart({ cartItems, toggleCart, removeFromCart }) {
                   className="cart__item-remove"
                   onClick={() => removeFromCart(index)}
                 >
-                  Удалить
+                  Delete
                 </button>
               </li>
             ))}

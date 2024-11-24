@@ -2,13 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import BooksList from './components/BooksList';
-import Cart from './components/Cart'; // Импортируем новый компонент Cart
+import Cart from './components/Cart';
 import './index.css';
 
 function App() {
   const [books, setBooks] = useState([]);
-  const [cart, setCart] = useState([]); // Состояние для корзины
-  const [isCartOpen, setIsCartOpen] = useState(false); // Состояние для видимости корзины
+  const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   const API_URL =
     window.location.hostname === 'localhost'
@@ -17,6 +18,7 @@ function App() {
 
   useEffect(() => {
     getBooks();
+    loadCartFromStorage();
   }, []);
 
   const getBooks = async () => {
@@ -25,22 +27,36 @@ function App() {
       const data = await response.json();
       setBooks(data);
     } catch (error) {
-      console.error('Ошибка при получении данных книг:', error);
+      console.error('Mistake while receiving book:', error);
     }
   };
 
   const addToCart = (book) => {
-    setCart([...cart, book]); // Добавляем книгу в корзину
+    const newCart = [...cart, book];
+    setCart(newCart);
+    saveCartToStorage(newCart);
   };
 
   const removeFromCart = (index) => {
     const newCart = [...cart];
     newCart.splice(index, 1);
-    setCart(newCart); // Удаляем книгу из корзины
+    setCart(newCart);
+    saveCartToStorage(newCart);
   };
 
   const toggleCart = () => {
-    setIsCartOpen(!isCartOpen); // Переключаем видимость корзины
+    setIsCartOpen(!isCartOpen);
+  };
+
+  const saveCartToStorage = (cartItems) => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  };
+
+  const loadCartFromStorage = () => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
   };
 
   return (
@@ -48,7 +64,8 @@ function App() {
       <Header
         getBooks={setBooks}
         cartItems={cart.length}
-        toggleCart={toggleCart} // Передаем функцию toggleCart
+        toggleCart={toggleCart}
+        isAuthenticated={isAuthenticated}
       />
       <div className="container">
         <BooksList books={books} addToCart={addToCart} />

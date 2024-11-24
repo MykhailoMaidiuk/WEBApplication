@@ -40,7 +40,7 @@ function Book({ book, addToCart }) {
           className="book__add-to-cart"
           onClick={() => addToCart(book)}
         >
-          Добавить в корзину
+          Add to cart
         </button>
       </div>
     </div>

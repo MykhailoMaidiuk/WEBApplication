@@ -1,7 +1,7 @@
 // src/components/Header.js
 import React, { useState } from 'react';
 
-function Header({ getBooks, cartItems, toggleCart }) {
+function Header({ getBooks, cartItems, toggleCart, isAuthenticated }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   const API_URL =
@@ -37,16 +37,17 @@ function Header({ getBooks, cartItems, toggleCart }) {
           <input
             className="header__search"
             type="text"
-            placeholder="Поиск..."
+            placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </form>
-        <div className="header__cart" onClick={toggleCart}>
-          {/* Добавляем обработчик клика */}
-          <span className="header__cart-icon">🛒</span>
-          <span className="header__cart-count">{cartItems}</span>
-        </div>
+        {isAuthenticated && (
+          <div className="header__cart" onClick={toggleCart}>
+            <span className="header__cart-icon">🛒</span>
+            <span className="header__cart-count">{cartItems}</span>
+          </div>
+        )}
       </div>
     </header>
   );
