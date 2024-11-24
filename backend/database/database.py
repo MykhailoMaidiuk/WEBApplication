@@ -1,36 +1,31 @@
 # database/database.py
+
+import os
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session, declarative_base
-from config import DATABASE_URI
-import time
-import sys
+from sqlalchemy.orm import sessionmaker, scoped_session
+from flask_sqlalchemy import SQLAlchemy
 
-# Create SQLAlchemy engine
+# Database connection settings
+POSTGRES_USER = os.environ.get('POSTGRES_USER', 'postgres')
+POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD', 'postgres')
+POSTGRES_DB = os.environ.get('POSTGRES_DB', 'postgres')
+POSTGRES_HOST = os.environ.get('POSTGRES_HOST', 'db')
+POSTGRES_PORT = os.environ.get('POSTGRES_PORT', '5432')
+
+DATABASE_URI = (
+    f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}'
+)
+
+# Use SQLAlchemy to connect Flask app
+db = SQLAlchemy()
+
+# Create engine for custom session
 engine = create_engine(DATABASE_URI, echo=False)
-
-# Create session
 SessionFactory = sessionmaker(bind=engine)
 Session = scoped_session(SessionFactory)
 
-# Base model
-Base = declarative_base()
-
-def create_tables_with_retry(logger, retries=5, delay=5):
-    from models import Book, User  # Import models here to register them with Base
-    for attempt in range(1, retries + 1):
-        try:
-            Base.metadata.create_all(engine)
-            logger.info("Database tables created")
-            return
-        except Exception as e:
-            logger.error(f"Error creating tables: {e}")
-            if attempt < retries:
-                logger.info(
-                    f"Retrying in {delay} seconds... (Attempt {attempt}/{retries})"
-                )
-                time.sleep(delay)
-            else:
-                logger.error(
-                    "Failed to create database tables after several attempts"
-                )
-                sys.exit(1)
+def init_app(app):
+    """Initialize app with SQLAlchemy and database connection."""
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.init_app(app)

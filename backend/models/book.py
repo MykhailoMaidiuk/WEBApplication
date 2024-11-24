@@ -1,12 +1,10 @@
+# models/book.py
+
 from sqlalchemy import (
-    Column,
-    String,
-    Integer,
-    Float,
-    Text,
-    CheckConstraint,
+    Column, String, Integer, Float, Text, Boolean, CheckConstraint
 )
-from database import Base  # Import Base from database package
+from sqlalchemy.orm import relationship
+from .base import Base
 
 class Book(Base):
     __tablename__ = 'books'
@@ -17,11 +15,13 @@ class Book(Base):
     authors = Column(String(), nullable=True)
     categories = Column(String(), nullable=True)
     thumbnail = Column(String(), nullable=True)
-    description = Column(Text(), nullable=True)
-    published_year = Column(Integer(), nullable=True)
-    average_rating = Column(Float(), nullable=True)
-    num_pages = Column(Integer(), nullable=True)
-    ratings_count = Column(Integer(), nullable=True)
+    description = Column(Text, nullable=True)
+    published_year = Column(Integer, nullable=True)
+    average_rating = Column(Float, nullable=True)
+    num_pages = Column(Integer, nullable=True)
+    ratings_count = Column(Integer, nullable=True)
+    is_active = Column(Boolean, default=True)
+    favorited_by = relationship('FavoriteBook', back_populates='book', cascade='all, delete-orphan')
 
     __table_args__ = (
         CheckConstraint('char_length(isbn13) = 13', name='check_isbn13_length'),
@@ -29,7 +29,6 @@ class Book(Base):
         CheckConstraint('char_length(title) <= 255', name='check_title_length'),
     )
 
-    # Method to convert object to dictionary
     def as_dict(self):
         return {
             'isbn13': self.isbn13,
@@ -37,11 +36,12 @@ class Book(Base):
             'title': self.title,
             'subtitle': self.subtitle,
             'authors': self.authors,
-            'categories': self.categories,
+            'categories': self.categories.split(',') if isinstance(self.categories, str) else self.categories,
             'thumbnail': self.thumbnail,
             'description': self.description,
             'published_year': self.published_year,
             'average_rating': self.average_rating,
             'num_pages': self.num_pages,
             'ratings_count': self.ratings_count,
+            'is_active': self.is_active,
         }
