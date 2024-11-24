@@ -1,30 +1,13 @@
 # models/user.py
+from database import Base
+from sqlalchemy import Column, Integer, String
 
-from flask_login import UserMixin
-from sqlalchemy import Column, String, Integer, Boolean
-from sqlalchemy.orm import relationship
-from . import Base
-from flask_bcrypt import Bcrypt
-
-bcrypt = Bcrypt()
-
-class User(Base, UserMixin):
+class User(Base):
     __tablename__ = 'users'
+
     id = Column(Integer, primary_key=True)
-    username = Column(String(80), unique=True, nullable=False)
+    username = Column(String(50), nullable=False, unique=True)
     password_hash = Column(String(128), nullable=False)
-    is_admin = Column(Boolean, default=False)
-    favorites = relationship('FavoriteBook', back_populates='user', cascade='all, delete-orphan')
 
-    def set_password(self, password):
-        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
-
-    def check_password(self, password):
-        return bcrypt.check_password_hash(self.password_hash, password)
-
-    def as_dict(self):
-        return {
-            'id': self.id,
-            'username': self.username,
-            'is_admin': self.is_admin,
-        }
+    def __repr__(self):
+        return f'<User {self.username}>'

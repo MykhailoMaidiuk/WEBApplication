@@ -36,24 +36,3 @@
     transform: rotate(360deg);
   }
 }
-
-.language-switcher {
-  justify-content: flex-end;
-  padding: 10px 20px;
-  background-color: #f4f4f4;
-  margin-left: auto;
-}
-
-.language-btn {
-  background: none;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  cursor: pointer;
-  margin-left: 10px;
-  font-size: 14px;
-  border-radius: 4px;
-}
-
-.language-btn:hover {
-  border-color: #333;
-}
