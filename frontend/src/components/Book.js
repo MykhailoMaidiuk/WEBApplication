@@ -27,6 +27,7 @@ function Book({ book, addToCart }) {
         <div className="book__category">
           {book.categories || 'No category'}
         </div>
+        <div className="book__price">{book.price} Kč</div>
         {book.average_rating && (
           <div
             className={`book__average book__average--${getClassByRate(
@@ -40,11 +41,12 @@ function Book({ book, addToCart }) {
           className="book__add-to-cart"
           onClick={() => addToCart(book)}
         >
-          Add to cart
+          add to basket
         </button>
       </div>
     </div>
   );
 }
+
 
 export default Book;
