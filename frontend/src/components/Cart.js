@@ -1,3 +1,6 @@
+// src/components/Cart.js
+import React from 'react';
+
 function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout }) {
   const totalPrice = cartItems.reduce((sum, book) => sum + book.price, 0);
 
@@ -36,7 +39,7 @@ function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout }) {
                 </li>
               ))}
             </ul>
-            <p className="cart__total">Итого: {totalPrice} Kč</p>
+            <p className="cart__total">Total: {totalPrice} Kč</p>
             <button className="cart__checkout" onClick={proceedToCheckout}>
               Accepte order 
             </button>

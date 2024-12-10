@@ -1,6 +1,7 @@
+/* Reset základních stylů */
 * {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -9,11 +10,13 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
+/* Kontejner pro stránku */
 .container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* Stylování pro header */
 .header__content {
   display: flex;
   align-items: center;
@@ -26,6 +29,7 @@ body {
   font-size: 32px;
   text-decoration: none;
   color: #ffffff;
+  margin-right: 20px;
 }
 
 .header__search {
@@ -35,14 +39,48 @@ body {
   outline: none;
 }
 
+.hidden {
+  display: none;
+}
+
+/* Prostor pro vyhledávání */
+.header__search-space {
+  width: 200px;
+  height: 40px;
+  display: inline-block;
+}
+
+/* Stylování uživatelské sekce */
+.user-section {
+  display: flex;
+  align-items: center;
+}
+
+.auth-links {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.auth-links a {
+  margin: 0 5px;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.auth-links span {
+  color: #ffffff;
+}
+
+/* Knihy */
 .books {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 .book {
-  width: 240px;
+  width: 250px;
   margin: 10px;
   position: relative;
 }
@@ -83,17 +121,22 @@ body {
   color: #ffffff;
 }
 
+.book__author {
+  font-size: 14px;
+  font-style: italic;
+  color: #ffffff;
+}
+
 .book__category {
   font-size: 14px;
   color: #ffd80e;
 }
 
+/* Hodnocení knihy */
 .book__average {
   position: absolute;
   top: 10px;
   left: 10px;
-  right: 0;
-  border-radius: 50%;
   width: 36px;
   height: 36px;
   display: flex;
@@ -102,6 +145,7 @@ body {
   background-color: #1a191f;
   color: #ffffff;
   font-size: 14px;
+  border-radius: 50%;
 }
 
 .book__average--green {
@@ -115,6 +159,293 @@ body {
 .book__average--red {
   border: 1px solid red;
 }
+
+/* Možnosti řazení */
+.sorting-options,
+.sorting-options * {
+  color: #ffffff !important;
+}
+
+.sorting-options-container {
+  color: #ffffff;
+}
+
+.sorting-options-container label,
+.sorting-options-container select,
+.sorting-options-container option {
+  color: #ffffff !important;
+}
+
+.sorting-options-select {
+  background-color: #2a2a2e;
+  color: #ffffff;
+  border-color: #3a3a3f;
+}
+
+/* Stránkování */
+.pagination {
+  margin-top: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  margin: 20px 0;
+   grid-row: 3;
+    align-self: center;
+  padding: 10px;
+}
+
+.pagination button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  color: #1a191f;
+  border: 2px solid #1a191f;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Stylování pro přihlášení/registraci */
+.reg-log {
+  display: flex;
+  flex-direction: column;
+  margin-left: 200px;
+  margin-top: 50px;
+}
+
+.reg-log h2 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.reg-log form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 175px;
+}
+
+.reg-log input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.reg-log button {
+  padding: 10px;
+  color: #1a191f;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reg-log button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Stylování detailu knihy */
+.book-detail {
+  text-align: left;
+  color: white;
+  padding: 20px;
+}
+
+.book-detail__back-button {
+  margin-bottom: 20px;
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.book-detail__content {
+  display: flex;
+  align-items: flex-start;
+}
+
+.book-detail__cover {
+  width: 300px;
+  height: auto;
+  padding-right: 20px;
+}
+
+.book-detail__title {
+  font-size: 2em;
+  color: white;
+  font-weight: bold;
+}
+
+.book-detail__subtitle {
+  font-size: 1.2em;
+  color: #ccc;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.book-detail__info {
+  color: white;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.book-detail__description-box {
+  padding: 15px;
+  background-color: #2a2a2e;
+  border: 1px solid #3a3a3f;
+  border-radius: 8px;
+}
+
+.book-detail__description-box h3 {
+  color: #ffd80e;
+}
+
+.book-detail__description {
+  color: white;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin: 20px auto;
+  font-style: normal;
+  max-width: 600px;
+}
+
+.header__filters {
+  flex: 0 0 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border-right: 1px solid #3a3a3f;
+}
+
+.header__filters input,
+.header__filters select,
+.header__filters button {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  flex: 0 0 250px;
+  padding: 20px;
+  background-color: #2c2c2e;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-right: 1px solid #3a3a3f;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  background-color: #1a191f;
+}
+.favorite-books{
+  color: #ffffff;
+}
+.books.few-books {
+  min-height: auto; /* Pro knihy <= 4 nezajišťuje plnou výšku */
+}
+
+/* UserProfile */
+.user-profile {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+  margin: 20px auto;
+}
+
+.user-profile h2 {
+  font-size: 28px;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 16px;
+  color: #555;
+}
+
+input,
+select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: 100%;
+}
+
+input[type="checkbox"] {
+  width: auto;
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+p {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+/* Success and Error Messages */
+p[style*="color: green"] {
+  color: green;
+}
+
+p[style*="color: red"] {
+  color: red;
+}
+
+
+
+.category-checkboxes {
+  border: 3px white;
+  background: lightyellow;
+  color: white;
+}
+
+.book__price {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 5px 0;
+  color:  white;
+}
+
 /* Добавьте следующие стили в index.css */
 
 .book__add-to-cart {
@@ -215,23 +546,6 @@ body {
   font-size: 14px;
 }
 
-/* Добавьте в index.css */
-.cart__checkout {
-  margin-top: 20px;
-  padding: 10px 15px;
-  background-color: #ffd80e;
-  color: #1a191f;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-}
-
-.cart__checkout:hover {
-  background-color: #e6c300;
-}
-
-
 /* Стили для кнопки "Добавить в корзину" */
 .book__add-to-cart {
   margin-top: 10px;
@@ -263,97 +577,4 @@ body {
 .header__cart-count {
   margin-left: 5px;
   font-size: 16px;
-}
-/* Добавьте в index.css */
-.cart__item-price {
-  font-size: 14px;
-  color: #ffd80e;
-}
-
-.cart__total {
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-/* Добавьте в index.css */
-/* Стили для формы подтверждения заказа */
-.order-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(26, 25, 31, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.order-form {
-  background-color: #ffffff;
-  padding: 20px;
-  width: 400px;
-  max-height: 80vh;
-  overflow-y: auto;
-  border-radius: 8px;
-  position: relative;
-}
-
-.order-form__close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #ffd80e;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.order-form h2 {
-  margin-bottom: 20px;
-}
-
-.order-form label {
-  display: block;
-  margin-bottom: 15px;
-  color: #1a191f;
-}
-
-.order-form input[type="text"],
-.order-form input[type="email"],
-.order-form select {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-}
-
-.consent-label {
-  display: flex;
-  align-items: center;
-}
-
-.order-form input[type="checkbox"] {
-  margin-left: 10px;
-}
-
-.order-form button[type="submit"] {
-  margin-top: 20px;
-  padding: 10px 15px;
-  background-color: #ffd80e;
-  color: #1a191f;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-}
-
-.order-form button[type="submit"]:hover {
-  background-color: #e6c300;
-}
-.book__price {
-  font-size: 16px;
-  color: #ffd80e;
-  margin-top: 5px;
 }
