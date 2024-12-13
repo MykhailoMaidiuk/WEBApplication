@@ -7,7 +7,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import FavoriteBooks from "./components/FavoriteBooks";
 import UserProfile from "./components/UserProfile";
-import Cart from './components/Cart';
+import Cart from "./components/Cart";
+import OrderConfirmation from "./components/OrderConfirmation";
 import "./index.css";
 import "./i18n";
 
@@ -18,18 +19,53 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalBooks, setTotalBooks] = useState(0);
-  const [pageSize] = useState(50); // Velikost stránky
+  const [pageSize] = useState(50);
   const [favorites, setFavorites] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cart, setCart] = useState([]);
 
-  const API_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:8009"
-    : "http://backend:8009";
+  // States for order confirmation logic
+  const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // Simulate user auth
 
-  // Fetch knih ze serveru
+  const API_URL =
+    window.location.hostname === "localhost"
+      ? "http://localhost:8009"
+      : "http://backend:8009";
+
+  // Save and load cart from localStorage
+  const saveCartToStorage = (newCart) => {
+    localStorage.setItem("cart", JSON.stringify(newCart));
+  };
+
+  const loadCartFromStorage = () => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+  };
+
+  // Save and load user data (for order confirmation form)
+  const saveUserData = (data) => {
+    setUserData(data);
+    localStorage.setItem("userData", JSON.stringify(data));
+  };
+
+  const loadUserData = () => {
+    const savedUserData = localStorage.getItem("userData");
+    if (savedUserData) {
+      setUserData(JSON.parse(savedUserData));
+    }
+  };
+
+  useEffect(() => {
+    loadCartFromStorage();
+    loadUserData();
+  }, []);
+
+  // Fetch books from the server
   const getBooks = async (page = currentPage) => {
     try {
       const response = await fetch(`${API_URL}/books?page=${page}&page_size=${pageSize}`);
@@ -43,7 +79,12 @@ function App() {
       console.error(t("Error fetching books"), error);
     }
   };
+
   const addToCart = (book) => {
+    if (!isAuthenticated) {
+      alert("Please log in to add items to the cart.");
+      return;
+    }
     const newCart = [...cart, book];
     setCart(newCart);
     saveCartToStorage(newCart);
@@ -57,100 +98,92 @@ function App() {
   };
 
   const toggleCart = () => {
-    console.log("Toggling cart");
+    if (!isAuthenticated) {
+      alert("Please log in to view the cart.");
+      return;
+    }
     setIsCartOpen(!isCartOpen);
   };
 
-
-
-  const loadCartFromStorage = () => {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
+  // Proceed to checkout: close cart, open order form
+  const proceedToCheckout = () => {
+    if (cart.length === 0) {
+      alert("Your cart is empty.");
+      return;
     }
+    setIsCartOpen(false);
+    setIsOrderFormOpen(true);
   };
-  useEffect(() => {
-    loadCartFromStorage();
-  }, []);
 
-  // Kontrola aktuálního uživatele
-   const checkCurrentUser = async () => {
+  // Toggle order confirmation form
+  const toggleOrderConfirmation = () => {
+    setIsOrderFormOpen(false);
+  };
+
+  const checkCurrentUser = async () => {
     try {
-      // Nejprve zjistíme aktuálního uživatele
       const userResponse = await fetch(`${API_URL}/current_user`, {
         method: "GET",
-        credentials: "include",  // Zajištění, že cookies jsou odesílány
+        credentials: "include",
       });
 
       if (userResponse.ok) {
         const userData = await userResponse.json();
-        console.log("Aktuální uživatel:", userData.user);
-
-        // Nastavíme uživatele
         setUser(userData.user || null);
 
-        // Pokud uživatel existuje, zavoláme endpoint pro detaily uživatele
         if (userData.user) {
           const response = await fetch(`${API_URL}/user`, {
             method: "GET",
-            credentials: "include",  // Ujistíme se, že cookies budou odeslány
+            credentials: "include",
           });
 
           if (response.ok) {
             const data = await response.json();
-            console.log("Uživatelský detail:", data);
-            setUser(data); // Uložíme detaily uživatele do stavu
+            setUser(data);
           } else {
-            console.error("Chyba při získávání uživatelských detailů");
-            setUser(userData.user); // Pokud endpoint /user selže, stále nastavíme uživatele bez detailů
+            console.error("Error fetching user details");
+            setUser(userData.user);
           }
         } else {
-          setFavorites([]); // Pokud uživatel není přihlášený, vymažeme oblíbené knihy
+          setFavorites([]);
         }
       } else {
-        setUser(null); // Pokud /current_user vrátí chybu, nastavíme uživatele na null
-        setFavorites([]); // Vymažeme oblíbené knihy v případě chyby
+        setUser(null);
+        setFavorites([]);
       }
     } catch (error) {
-      console.error("Chyba při ověřování aktuálního uživatele nebo získávání oblíbených knih", error);
+      console.error("Error checking current user", error);
       setUser(null);
-      setFavorites([]);  // Vymažte oblíbené knihy v případě chyby
+      setFavorites([]);
     }
   };
 
   const updateUserProfile = (updatedUser) => {
     setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser)); // Optionally store it locally
+    localStorage.setItem("user", JSON.stringify(updatedUser));
   };
 
-
-  // Přidání/odebrání knihy z oblíbených
   const toggleFavorite = async (book) => {
-    console.log("toggleFavorite voláno pro knihu:", book); // Přidání logu pro diagnostiku
     const isAlreadyFavorite = favorites.some((fav) => fav.isbn13 === book.isbn13);
-
     try {
       if (isAlreadyFavorite) {
-        // Odebrání z oblíbených
         const response = await fetch(`${API_URL}/remove_from_favorites`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ isbn13: book.isbn13 }),
-          credentials: "include", // Zajišťuje odesílání cookies
+          credentials: "include",
         });
 
         if (response.ok) {
-          console.log("Kniha úspěšně odebrána z oblíbených");
           setFavorites((prevFavorites) =>
             prevFavorites.filter((fav) => fav.isbn13 !== book.isbn13)
           );
         } else {
-          console.error("Chyba při odebrání z oblíbených", await response.text());
+          console.error("Error removing from favorites", await response.text());
         }
       } else {
-        // Přidání do oblíbených
         const response = await fetch(`${API_URL}/add_to_favorites`, {
           method: "POST",
           headers: {
@@ -161,17 +194,15 @@ function App() {
         });
 
         if (response.ok) {
-          console.log("Kniha úspěšně přidána do oblíbených");
           setFavorites((prevFavorites) => [...prevFavorites, book]);
         } else {
-          console.error("Chyba při přidávání do oblíbených", await response.text());
+          console.error("Error adding to favorites", await response.text());
         }
       }
     } catch (error) {
-      console.error("Chyba při přepínání oblíbených", error);
+      console.error("Error toggling favorite", error);
     }
   };
-
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -179,21 +210,39 @@ function App() {
         const response = await fetch(`${API_URL}/categories`);
         if (!response.ok) throw new Error("Failed to fetch categories");
         const data = await response.json();
-        console.log("Readed categories: ", data);
         setCategories(data);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     };
     fetchCategories();
-  }, [])
+  }, []);
 
   useEffect(() => {
-    checkCurrentUser(); // Zavoláme funkci pro získání uživatele a detailů
-    getBooks(currentPage); // Načteme knihy pro aktuální stránku
-  }, [i18n.language, currentPage, setUser]); // Spustí se při změně jazyka nebo změně stránky
+    checkCurrentUser();
+    getBooks(currentPage);
+  }, [i18n.language, currentPage]);
 
+  // Submit order with surcharge calculation
+  const submitOrder = (formData) => {
+    let surcharge = 0;
+    if (formData.paymentMethod === "dobirka") {
+      surcharge = 50; // Cash on Delivery fixed surcharge
+    } else if (formData.paymentMethod === "card") {
+      const totalPrice = cart.reduce((sum, book) => sum + (book.price || 0), 0);
+      surcharge = totalPrice * 0.01; // 1% surcharge for card payment
+    }
 
+    const totalPrice =
+      cart.reduce((sum, book) => sum + (book.price || 0), 0) + surcharge;
+
+    alert(`Order placed! Total amount: ${totalPrice.toFixed(2)} Kč`);
+
+    // Clear the cart
+    setCart([]);
+    localStorage.removeItem("cart");
+    setIsOrderFormOpen(false);
+  };
 
   return (
     <Router>
@@ -212,6 +261,23 @@ function App() {
           />
         </aside>
         <main className="main-content">
+          {isCartOpen && (
+            <Cart
+              cartItems={cart}
+              toggleCart={toggleCart}
+              removeFromCart={removeFromCart}
+              proceedToCheckout={proceedToCheckout} // "Accepte order" button calls this
+            />
+          )}
+          {isOrderFormOpen && (
+            <OrderConfirmation
+              cartItems={cart}
+              toggleOrderConfirmation={toggleOrderConfirmation}
+              userData={userData}
+              saveUserData={saveUserData}
+              submitOrder={submitOrder}
+            />
+          )}
           <Routes>
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route path="/register" element={<Register setUser={setUser} />} />
@@ -219,13 +285,6 @@ function App() {
               path="/user-profile"
               element={<UserProfile user={user} updateUserProfile={updateUserProfile} />}
             />
-            {isCartOpen && (
-              <Cart
-                cartItems={cart}
-                toggleCart={toggleCart}
-                removeFromCart={removeFromCart}
-              />
-            )}
             <Route
               path="/"
               element={

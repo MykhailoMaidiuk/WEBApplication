@@ -1,8 +1,7 @@
-// src/components/Cart.js
 import React from 'react';
 
 function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout }) {
-  const totalPrice = cartItems.reduce((sum, book) => sum + book.price, 0);
+  const totalPrice = cartItems.reduce((sum, book) => sum + (book.price || 0), 0);
 
   return (
     <div className="cart-overlay">
@@ -12,7 +11,7 @@ function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout }) {
         </button>
         <h2>Basket</h2>
         {cartItems.length === 0 ? (
-          <p>Your basket empty</p>
+          <p>Your basket is empty</p>
         ) : (
           <>
             <ul>
@@ -26,9 +25,11 @@ function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout }) {
                   <div className="cart__item-info">
                     <p className="cart__item-title">{item.title}</p>
                     <p className="cart__item-category">
-                      {item.categories || 'No category'}
+                      {item.categories && item.categories.length > 0
+                        ? item.categories.join(", ")
+                        : 'No category'}
                     </p>
-                    <p className="cart__item-price">{item.price} Kč</p>
+                    <p className="cart__item-price">{item.price ? `${item.price} Kč` : 'Not priced'}</p>
                   </div>
                   <button
                     className="cart__item-remove"
@@ -40,8 +41,9 @@ function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout }) {
               ))}
             </ul>
             <p className="cart__total">Total: {totalPrice} Kč</p>
+            {/* Button to proceed to order confirmation */}
             <button className="cart__checkout" onClick={proceedToCheckout}>
-              Accepte order 
+              Accepte order
             </button>
           </>
         )}
@@ -49,6 +51,5 @@ function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout }) {
     </div>
   );
 }
-
 
 export default Cart;
