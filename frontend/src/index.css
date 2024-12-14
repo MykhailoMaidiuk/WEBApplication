@@ -411,19 +411,22 @@ input[type="checkbox"] {
 }
 
 button[type="submit"] {
-  background-color: #ffd80e;
-  color: #1a191f;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  background-color: #ffd80e; 
+  color: #1a191f;            
+  border: none;              
+  padding: 10px 15px;        
+  border-radius: 5px;     
+  cursor: pointer;          
+  transition: background-color 0.2s ease; 
   font-size: 16px; 
 }
 
 button[type="submit"]:hover {
-  background-color: #e6c300;
+  background-color: #e6c300; 
 }
+
+
+
 
 p {
   margin-top: 10px;
