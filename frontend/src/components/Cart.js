@@ -1,7 +1,7 @@
 import React from 'react';
 
-function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout}) {
-  const totalPrice = cartItems.reduce((sum, book) => sum + (book.price || 0), 0);
+function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout }) {
+  const totalPrice = cartItems.reduce((sum, item) => sum + (item.book.price || 0) * item.quantity, 0);
 
   return (
     <div className="cart-overlay">
@@ -18,22 +18,27 @@ function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout}) {
               {cartItems.map((item, index) => (
                 <li key={index} className="cart__item">
                   <img
-                    src={item.thumbnail || 'https://via.placeholder.com/50'}
-                    alt={item.title}
+                    src={item.book.thumbnail || 'https://via.placeholder.com/50'}
+                    alt={item.book.title}
                     className="cart__item-image"
                   />
                   <div className="cart__item-info">
-                    <p className="cart__item-title">{item.title}</p>
+                    <p className="cart__item-title">{item.book.title}</p>
                     <p className="cart__item-category">
-                      {item.categories && item.categories.length > 0
-                        ? item.categories.join(", ")
+                      {item.book.categories && item.book.categories.length > 0
+                        ? item.book.categories.join(", ")
                         : 'No category'}
                     </p>
-                    <p className="cart__item-price">{item.price ? `${item.price} Kč` : 'Not priced'}</p>
+                    <p className="cart__item-price">
+                      {item.book.price ? `${item.book.price} Kč` : 'Not priced'}
+                    </p>
+                    <p className="cart__item-quantity">
+                      Quantity: {item.quantity}
+                    </p>
                   </div>
                   <button
                     className="cart__item-remove"
-                    onClick={() => removeFromCart(index)}
+                    onClick={() => removeFromCart(item.book.isbn13)}
                   >
                     Delete
                   </button>
@@ -41,7 +46,6 @@ function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout}) {
               ))}
             </ul>
             <p className="cart__total">Total: {totalPrice} Kč</p>
-            {/* Button to proceed to order confirmation */}
             <button className="cart__checkout" onClick={proceedToCheckout}>
               Accepte order
             </button>

@@ -23,6 +23,7 @@ function App() {
   const [favorites, setFavorites] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  // Теперь cart - массив объектов { book, quantity }
   const [cart, setCart] = useState([]);
 
   // States for order confirmation logic
@@ -80,21 +81,47 @@ function App() {
     }
   };
 
-  const addToCart = (book) => {
+  // Добавляем книгу в корзину
+  const addToCart = (newBook) => {
     if (!isAuthenticated) {
       alert("Please log in to add items to the cart.");
       return;
     }
-    const newCart = [...cart, book];
-    setCart(newCart);
-    saveCartToStorage(newCart);
+
+    setCart((prevCart) => {
+      const existingItemIndex = prevCart.findIndex((item) => item.book.isbn13 === newBook.isbn13);
+      if (existingItemIndex !== -1) {
+        // Если книга уже есть, увеличиваем quantity
+        const updatedCart = [...prevCart];
+        updatedCart[existingItemIndex].quantity += 1;
+        saveCartToStorage(updatedCart);
+        return updatedCart;
+      } else {
+        // Если книги нет, добавляем новую запись
+        const updatedCart = [...prevCart, { book: newBook, quantity: 1 }];
+        saveCartToStorage(updatedCart);
+        return updatedCart;
+      }
+    });
   };
 
-  const removeFromCart = (index) => {
-    const newCart = [...cart];
-    newCart.splice(index, 1);
-    setCart(newCart);
-    saveCartToStorage(newCart);
+  // Удаляем одну книгу из корзины (уменьшаем quantity)
+  const removeFromCart = (isbn13) => {
+    setCart((prevCart) => {
+      const existingItemIndex = prevCart.findIndex((item) => item.book.isbn13 === isbn13);
+      if (existingItemIndex === -1) return prevCart;
+
+      const updatedCart = [...prevCart];
+      if (updatedCart[existingItemIndex].quantity > 1) {
+        updatedCart[existingItemIndex].quantity -= 1;
+      } else {
+        // Если количество было 1, то удаляем позицию
+        updatedCart.splice(existingItemIndex, 1);
+      }
+
+      saveCartToStorage(updatedCart);
+      return updatedCart;
+    });
   };
 
   const toggleCart = () => {
@@ -158,35 +185,32 @@ function App() {
     }
   };
 
-  // Внутри App.js
+  const updateUserProfile = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
 
-const updateUserProfile = (updatedUser) => {
-  setUser(updatedUser);
-  localStorage.setItem("user", JSON.stringify(updatedUser));
+    // Разделяем full_name на firstName и lastName
+    let firstName = "";
+    let lastName = "";
+    if (updatedUser.full_name) {
+      const parts = updatedUser.full_name.trim().split(" ");
+      firstName = parts[0] || "";
+      lastName = parts.slice(1).join(" ") || "";
+    }
 
-  // Разделяем full_name на firstName и lastName
-  let firstName = "";
-  let lastName = "";
-  if (updatedUser.full_name) {
-    const parts = updatedUser.full_name.trim().split(" ");
-    firstName = parts[0] || "";
-    lastName = parts.slice(1).join(" ") || "";
-  }
+    const formData = {
+      firstName: firstName,
+      lastName: lastName,
+      email: updatedUser.email || "",
+      personalAddress: updatedUser.personal_address || "",
+      billingAddress: updatedUser.billing_address || "",
+      consent: false,
+      paymentMethod: ""
+    };
 
-  const formData = {
-    firstName: firstName,
-    lastName: lastName,
-    email: updatedUser.email || "",
-    personalAddress: updatedUser.personal_address || "",
-    billingAddress: updatedUser.billing_address || "",
-    consent: false,
-    paymentMethod: ""
+    // Сохраняем userData, чтобы OrderConfirmation мог автоматически подставить данные
+    saveUserData(formData);
   };
-
-  // Сохраняем userData, чтобы OrderConfirmation мог автоматически подставить данные
-  saveUserData(formData);
-};
-
 
   const toggleFavorite = async (book) => {
     const isAlreadyFavorite = favorites.some((fav) => fav.isbn13 === book.isbn13);
@@ -251,16 +275,15 @@ const updateUserProfile = (updatedUser) => {
   // Submit order with surcharge calculation
   const submitOrder = (formData) => {
     let surcharge = 0;
+    const totalPriceWithoutSurcharge = cart.reduce((sum, item) => sum + (item.book.price || 0) * item.quantity, 0);
+
     if (formData.paymentMethod === "dobirka") {
       surcharge = 50; // Cash on Delivery fixed surcharge
     } else if (formData.paymentMethod === "card") {
-      const totalPrice = cart.reduce((sum, book) => sum + (book.price || 0), 0);
-      surcharge = totalPrice * 0.01; // 1% surcharge for card payment
+      surcharge = totalPriceWithoutSurcharge * 0.01; // 1% surcharge for card payment
     }
 
-    const totalPrice =
-      cart.reduce((sum, book) => sum + (book.price || 0), 0) + surcharge;
-
+    const totalPrice = totalPriceWithoutSurcharge + surcharge;
     alert(`Order placed! Total amount: ${totalPrice.toFixed(2)} Kč`);
 
     // Clear the cart
@@ -281,7 +304,7 @@ const updateUserProfile = (updatedUser) => {
             setTotalBooks={setTotalBooks}
             setCurrentPage={setCurrentPage}
             categories={categories}
-            cartItems={cart.length}
+            cartItems={cart.reduce((acc, item) => acc + item.quantity, 0)} // подсчет общего кол-ва товаров
             toggleCart={toggleCart}
           />
         </aside>
@@ -291,7 +314,7 @@ const updateUserProfile = (updatedUser) => {
               cartItems={cart}
               toggleCart={toggleCart}
               removeFromCart={removeFromCart}
-              proceedToCheckout={proceedToCheckout} // "Accepte order" button calls this
+              proceedToCheckout={proceedToCheckout}
             />
           )}
           {isOrderFormOpen && (
@@ -301,7 +324,7 @@ const updateUserProfile = (updatedUser) => {
               userData={userData}
               saveUserData={saveUserData}
               submitOrder={submitOrder}
-              user = {user}
+              user={user}
             />
           )}
           <Routes>
@@ -310,9 +333,9 @@ const updateUserProfile = (updatedUser) => {
             <Route
               path="/user-profile"
               element={<UserProfile
-                  user={user}
-                  updateUserProfile={updateUserProfile}
-                  onProfileUpdate={checkCurrentUser}
+                user={user}
+                updateUserProfile={updateUserProfile}
+                onProfileUpdate={checkCurrentUser}
               />}
             />
             <Route
