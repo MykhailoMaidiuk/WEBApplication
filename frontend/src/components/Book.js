@@ -41,7 +41,7 @@ function Book({ book, user, onFavorite, isFavorite, addToCart }) {
         
         {book.price ? (
           <div className="book__price">
-            {`${t("Price:")} ${book.price} Kč`}
+            {`${t("Price:")} ${book.price} Czk`}
           </div>
         ) : (
           <div className="book__price">

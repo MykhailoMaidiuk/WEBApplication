@@ -84,10 +84,8 @@ def get_books_list(page, page_size, sort_by):
 def process_received_data(data, logger):
     session = Session()
     try:
-        num_deleted = session.query(Book).delete()
-        logger.info(f"Deleted {num_deleted} old records")
-
         added_records = 0
+        updated_records = 0
         skipped_records = 0
 
         for index, item in enumerate(data, start=1):
@@ -96,37 +94,62 @@ def process_received_data(data, logger):
                 skipped_records += 1
                 continue
 
+            raw_price = item.get('price')
             try:
-                price = float(item.get('price', 0)) if item.get('price') else None
-                book = Book(
-                    isbn13=item['isbn13'],
-                    isbn10=item['isbn10'],
-                    title=item['title'],
-                    subtitle=item.get('subtitle'),
-                    authors=item.get('authors'),
-                    categories=item.get('categories'),
-                    thumbnail=item.get('thumbnail'),
-                    description=item.get('description'),
-                    published_year=item.get('published_year'),
-                    average_rating=item.get('average_rating'),
-                    num_pages=item.get('num_pages'),
-                    ratings_count=item.get('ratings_count'),
-                )
-                session.add(book)
-                added_records += 1
+                price = float(raw_price) if raw_price is not None else None
+                existing_book = session.query(Book).filter_by(isbn13=item['isbn13']).first()
+
+                if existing_book:
+                    # Aktualizace existující knihy
+                    existing_book.isbn10 = item['isbn10']
+                    existing_book.title = item['title']
+                    existing_book.subtitle = item.get('subtitle')
+                    existing_book.authors = item.get('authors')
+                    existing_book.categories = item.get('categories')
+                    existing_book.thumbnail = item.get('thumbnail')
+                    existing_book.description = item.get('description')
+                    existing_book.published_year = item.get('published_year')
+                    existing_book.average_rating = item.get('average_rating')
+                    existing_book.num_pages = item.get('num_pages')
+                    existing_book.ratings_count = item.get('ratings_count')
+                    existing_book.price = price
+                    updated_records += 1
+                else:
+                    # Vložení nové knihy
+                    new_book = Book(
+                        isbn13=item['isbn13'],
+                        isbn10=item['isbn10'],
+                        title=item['title'],
+                        subtitle=item.get('subtitle'),
+                        authors=item.get('authors'),
+                        categories=item.get('categories'),
+                        thumbnail=item.get('thumbnail'),
+                        description=item.get('description'),
+                        published_year=item.get('published_year'),
+                        average_rating=item.get('average_rating'),
+                        num_pages=item.get('num_pages'),
+                        ratings_count=item.get('ratings_count'),
+                        price=price,
+                    )
+                    session.add(new_book)
+                    added_records += 1
             except Exception as e:
                 logger.error(f"Record {index}: Error processing book: {e}. Skipping record.")
                 skipped_records += 1
 
         session.commit()
-        return {"message": "Data processed", "added": added_records, "skipped": skipped_records}
+        return {
+            "message": "Data processed",
+            "added": added_records,
+            "updated": updated_records,
+            "skipped": skipped_records
+        }
     except Exception as e:
         session.rollback()
         logger.error(f"Error processing data: {e}")
         return {"error": "Internal server error", "status": 500}
     finally:
         session.close()
-
 
 def search_books_query(page, page_size, title, author, category, isbn13, sort_by):
     session = Session()

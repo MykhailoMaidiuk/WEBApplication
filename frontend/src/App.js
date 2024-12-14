@@ -301,6 +301,7 @@ const updateUserProfile = (updatedUser) => {
               userData={userData}
               saveUserData={saveUserData}
               submitOrder={submitOrder}
+              user = {user}
             />
           )}
           <Routes>
@@ -308,7 +309,11 @@ const updateUserProfile = (updatedUser) => {
             <Route path="/register" element={<Register setUser={setUser} />} />
             <Route
               path="/user-profile"
-              element={<UserProfile user={user} updateUserProfile={updateUserProfile} />}
+              element={<UserProfile
+                  user={user}
+                  updateUserProfile={updateUserProfile}
+                  onProfileUpdate={checkCurrentUser}
+              />}
             />
             <Route
               path="/"

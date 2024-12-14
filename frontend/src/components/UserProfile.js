@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-function UserProfile({ user, updateUserProfile }) {
+function UserProfile({ user, updateUserProfile, onProfileUpdate  }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+
   const [userDetails, setUserDetails] = useState({
-    username: user?.username || "",
+    username: user?.username || "", // Pokud uživatel není dostupný, nastavte prázdný řetězec
     full_name: user?.full_name || "",
     email: user?.email || "",
     personal_address: user?.personal_address || "",
@@ -29,36 +30,71 @@ function UserProfile({ user, updateUserProfile }) {
       ? "http://localhost:8009"
       : "http://wea.nti.tul.cz:8009";
 
+
   const handleUpdateProfile = async (e) => {
-    e.preventDefault();
-    const requestBody = { ...userDetails, username: user.username };
-
-    try {
-      const response = await fetch(`${API_URL}/user/update`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error(t("Failed to update profile"));
-      }
-
-      const updatedUser = await response.json();
-      updateUserProfile(updatedUser); // Вызываем updateUserProfile в App.js
-
-      setSuccessMessage(t("Profile updated successfully!"));
-      setError(null);
-      navigate("/");
-    } catch (err) {
-      console.error("Error updating profile:", err);
-      setError(t("Failed to update profile"));
-      setSuccessMessage("");
-    }
+  e.preventDefault();
+  const errors = [];
+  if (!userDetails.full_name.trim()) {
+    errors.push(t("Full Name is required."));
+  }
+  if (!userDetails.email.trim()) {
+    errors.push(t("Email is required."));
+  }
+  if (!userDetails.personal_address.trim()) {
+    errors.push(t("Personal Address is required."));
+  }
+  if (!userDetails.billing_same_as_personal && !userDetails.billing_address.trim()) {
+    errors.push(t("Billing Address is required if it is different from Personal Address."));
+  }
+  if (!userDetails.marketing_consent) {
+    errors.push(t("You must agree to Marketing Consent."));
+  }
+  if(!userDetails.age){
+    errors.push(t("Age is required."))
+  }
+  // Zobrazit chyby, pokud existují
+  if (errors.length > 0) {
+    setError(errors.join(" "));
+    setSuccessMessage("");
+    return;
+  }
+  const updatedDetails = {
+    ...userDetails,
+    billing_address: userDetails.billing_same_as_personal ? "" : userDetails.billing_address
   };
+  const requestBody = { ...updatedDetails, username: user.username };
+  try {
+    const response = await fetch(`${API_URL}/user/update`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+      credentials: "include",  // Ensure cookies are sent
+    });
+
+    if (!response.ok) {
+      throw new Error(t("Failed to update profile"));
+    }
+
+    const updatedUser = await response.json();  // updatedUser should be defined here
+
+    // Assuming updateUserProfile is passed as a prop to update user data in App.js
+    updateUserProfile(updatedUser);  // Make sure this is being called correctly
+
+    setSuccessMessage(t("Profile updated successfully!"));
+    setError(null);
+    if (onProfileUpdate) {
+      onProfileUpdate(); // Znovu načte uživatelská data
+    }
+    navigate("/");
+  } catch (err) {
+    console.error("Error updating profile:", err);
+    setError(t("Failed to update profile"));
+    setSuccessMessage("");
+  }
+};
+
 
   const handleChange = (field, value) => {
     setUserDetails((prev) => ({
@@ -119,14 +155,16 @@ function UserProfile({ user, updateUserProfile }) {
           />
         </div>
 
-        <div>
-          <label>{t("Billing Address")}</label>
-          <input
-            type="text"
-            value={userDetails.billing_address}
-            onChange={(e) => handleChange("billing_address", e.target.value)}
-          />
-        </div>
+        {!userDetails.billing_same_as_personal && (
+          <div>
+            <label>{t("Billing Address")}</label>
+            <input
+              type="text"
+              value={userDetails.billing_address}
+              onChange={(e) => handleChange("billing_address", e.target.value)}
+            />
+          </div>
+        )}
 
         <div>
           <label>{t("Billing Same As Personal")}</label>
@@ -189,14 +227,12 @@ function UserProfile({ user, updateUserProfile }) {
             }
           />
         </div>
-
+        {error && <p style={{ color: "red", marginTop: "10px", marginBottom: "10px" }}>{error}</p>}
+         {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
         <div>
           <button type="submit">{t("Update Profile")}</button>
         </div>
       </form>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
     </div>
   );
 }
