@@ -184,27 +184,33 @@ body {
 
 /* Stránkování */
 .pagination {
-  margin-top: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #ffffff;
-  margin: 20px 0;
-   grid-row: 3;
-    align-self: center;
-  padding: 10px;
+  margin: 20px auto;
 }
 
-.pagination button {
-  margin: 0 10px;
-  padding: 10px 20px;
+.pagination__btn {
+  margin: 0 5px;
+  padding: 10px 15px;
+  background-color: #fff;
+  border: 1px solid #333;
   color: #1a191f;
-  border: 2px solid #1a191f;
-  border-radius: 5px;
   cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
 }
 
-.pagination button:disabled {
+.pagination__btn:hover {
+  background-color: #ffd80e;
+}
+
+.pagination__btn.active {
+  background-color: #ffd80e;
+  font-weight: bold;
+}
+
+.pagination__btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -547,19 +553,7 @@ p[style*="color: red"] {
 }
 
 /* Стили для кнопки "Добавить в корзину" */
-.book__add-to-cart {
-  margin-top: 10px;
-  padding: 8px 12px;
-  background-color: #ffd80e;
-  color: #1a191f;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
 
-.book__add-to-cart:hover {
-  background-color: #e6c300;
-}
 
 /* Стили для иконки корзины в Header */
 .header__cart {
@@ -668,3 +662,30 @@ p[style*="color: red"] {
 .order-form button[type="submit"]:hover {
   background-color: #e6c300;
 }
+/* Добавляем контейнер для двух кнопок */
+.book__buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Общие стили для кнопок "Добавить в корзину" и "Добавить в избранное" */
+/* Удаляем flex-shrink: 0 из .book__add-to-favorites */
+.book__add-to-cart,
+.book__add-to-favorites {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #ffd80e;
+  color: #1a191f;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  /* Удаляем flex-shrink: 0 */
+}
+
+.book__add-to-cart:hover,
+.book__add-to-favorites:hover {
+  background-color: #e6c300;
+}
+
+

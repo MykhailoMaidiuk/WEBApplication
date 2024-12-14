@@ -7,15 +7,16 @@ function getClassByRate(rating) {
   return rating >= 4 ? "green" : rating >= 2.5 ? "orange" : "red";
 }
 
-function Book({ book, user, onFavorite, isFavorite, addToCart}) {
+function Book({ book, user, onFavorite, isFavorite, addToCart }) {
   const { t } = useTranslation();
 
-  const handleClick  = (event) => {
-    event.stopPropagation(); // Prevent the click from bubbling up and triggering the handleBookClick
+  const handleClick = (event) => {
+    event.stopPropagation();
     onFavorite(book);
   };
+
   const handleAddToCartClick = (event) => {
-    event.stopPropagation(); // Zastaví bublání události
+    event.stopPropagation();
     addToCart(book);
   };
 
@@ -34,26 +35,37 @@ function Book({ book, user, onFavorite, isFavorite, addToCart}) {
         <div className="book__author">{book.authors || t("Unknown Author")}</div>
         <div className="book__category">
           {book.categories && book.categories.length > 0
-              ? t("Category: {{category}}", {category: book.categories.join(", ")})
-              : t("No category")}
+            ? t("Category: {{category}}", {category: book.categories.join(", ")})
+            : t("No category")}
         </div>
-        {user && (
-            <button
-                className="favorite-button"
-                onClick={handleClick}>
-              {isFavorite ? t("Remove from Favorites") : t("Add to Favorites")}
-            </button>
+        
+        {book.price ? (
+          <div className="book__price">
+            {`${t("Price:")} ${book.price} Kč`}
+          </div>
+        ) : (
+          <div className="book__price">
+            {t("Not in stock")}
+          </div>
         )}
-        <div className="book__price">
-          {book.price ? `${t("Price:")} $${book.price}` : t("Not in stock")}
-        </div>
+
         {user && (
+          <div className="book__buttons">
             <button
-                className="book__add-to-cart"
-                onClick={handleAddToCartClick}>
-              Add to cart
+              className="book__add-to-cart"
+              onClick={handleAddToCartClick}
+            >
+              {t("Add to cart")}
             </button>
+            <button
+              className="book__add-to-favorites"
+              onClick={handleClick}
+            >
+              {isFavorite ? t("Remove") : t("Add to Favorites")}
+            </button>
+          </div>
         )}
+
         <div className={`book__average book__average--${getClassByRate(book.average_rating)}`}>
           {book.average_rating}
         </div>
@@ -61,7 +73,6 @@ function Book({ book, user, onFavorite, isFavorite, addToCart}) {
     </div>
   );
 }
-
 
 Book.propTypes = {
   book: PropTypes.shape({
@@ -71,10 +82,12 @@ Book.propTypes = {
     average_rating: PropTypes.number,
     thumbnail: PropTypes.string,
     isbn13: PropTypes.string.isRequired,
+    price: PropTypes.number
   }).isRequired,
   onFavorite: PropTypes.func.isRequired,
   isFavorite: PropTypes.bool.isRequired,
   user: PropTypes.object,
+  addToCart: PropTypes.func.isRequired
 };
 
 export default Book;

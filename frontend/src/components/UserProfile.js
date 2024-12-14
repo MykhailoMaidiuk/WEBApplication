@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-function UserProfile({ user, updateUserProfile  }) {
+function UserProfile({ user, updateUserProfile }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-
   const [userDetails, setUserDetails] = useState({
-    username: user?.username || "", // Pokud uživatel není dostupný, nastavte prázdný řetězec
+    username: user?.username || "",
     full_name: user?.full_name || "",
     email: user?.email || "",
     personal_address: user?.personal_address || "",
@@ -30,41 +29,36 @@ function UserProfile({ user, updateUserProfile  }) {
       ? "http://localhost:8009"
       : "http://wea.nti.tul.cz:8009";
 
-
   const handleUpdateProfile = async (e) => {
-  e.preventDefault();
-  const requestBody = { ...userDetails, username: user.username };
+    e.preventDefault();
+    const requestBody = { ...userDetails, username: user.username };
 
-  try {
-    const response = await fetch(`${API_URL}/user/update`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-      credentials: "include",  // Ensure cookies are sent
-    });
+    try {
+      const response = await fetch(`${API_URL}/user/update`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+        credentials: "include",
+      });
 
-    if (!response.ok) {
-      throw new Error(t("Failed to update profile"));
+      if (!response.ok) {
+        throw new Error(t("Failed to update profile"));
+      }
+
+      const updatedUser = await response.json();
+      updateUserProfile(updatedUser); // Вызываем updateUserProfile в App.js
+
+      setSuccessMessage(t("Profile updated successfully!"));
+      setError(null);
+      navigate("/");
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      setError(t("Failed to update profile"));
+      setSuccessMessage("");
     }
-
-    const updatedUser = await response.json();  // updatedUser should be defined here
-
-    // Assuming updateUserProfile is passed as a prop to update user data in App.js
-    updateUserProfile(updatedUser);  // Make sure this is being called correctly
-
-    setSuccessMessage(t("Profile updated successfully!"));
-    setError(null);
-    navigate("/");
-  } catch (err) {
-    console.error("Error updating profile:", err);
-    setError(t("Failed to update profile"));
-    setSuccessMessage("");
-  }
-};
-
-
+  };
 
   const handleChange = (field, value) => {
     setUserDetails((prev) => ({

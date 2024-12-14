@@ -158,10 +158,35 @@ function App() {
     }
   };
 
-  const updateUserProfile = (updatedUser) => {
-    setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+  // Внутри App.js
+
+const updateUserProfile = (updatedUser) => {
+  setUser(updatedUser);
+  localStorage.setItem("user", JSON.stringify(updatedUser));
+
+  // Разделяем full_name на firstName и lastName
+  let firstName = "";
+  let lastName = "";
+  if (updatedUser.full_name) {
+    const parts = updatedUser.full_name.trim().split(" ");
+    firstName = parts[0] || "";
+    lastName = parts.slice(1).join(" ") || "";
+  }
+
+  const formData = {
+    firstName: firstName,
+    lastName: lastName,
+    email: updatedUser.email || "",
+    personalAddress: updatedUser.personal_address || "",
+    billingAddress: updatedUser.billing_address || "",
+    consent: false,
+    paymentMethod: ""
   };
+
+  // Сохраняем userData, чтобы OrderConfirmation мог автоматически подставить данные
+  saveUserData(formData);
+};
+
 
   const toggleFavorite = async (book) => {
     const isAlreadyFavorite = favorites.some((fav) => fav.isbn13 === book.isbn13);
