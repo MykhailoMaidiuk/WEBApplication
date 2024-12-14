@@ -57,7 +57,6 @@ def add_comment(isbn13):
             print(f"Error adding comment: {e}")
             return jsonify({"error": "Failed to add comment"}), 500
 
-
 @comments_bp.route("/books/<string:isbn13>/comments", methods=["GET"])
 def get_comments(isbn13):
     with Session() as session:
