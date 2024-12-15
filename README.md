@@ -53,31 +53,34 @@ POSTGRES_DB=postgres
 CB_SERVER_HOST=localhost
 CB_SERVER_PORT=8978
 ```
-### **Get Books**
 
-- **URL:** `/books`
-- **Method:** `GET`
-- **Description:** Retrieves a list of all books.
-- **Response:**
+## API Endpoints
 
-  ```json
-  [
-    {
-      "isbn13": "9781556434952",
-      "isbn10": "1556434952",
-      "title": "Empire 2.0",
-      "subtitle": "A Modest Proposal for a United States of the West",
-      "authors": "Régis Debray",
-      "categories": "Political Science",
-      "thumbnail": "http://example.com/image.jpg",
-      "description": "Description of the book",
-      "published_year": 2004,
-      "average_rating": 4.75,
-      "num_pages": 144,
-      "ratings_count": 4
-    },
-    ...
-  ]
+### User Endpoints
+- **`POST /register`**: Register a new user.
+- **`POST /login`**: Authenticate a user.
+- **`POST /logout`**: Logout the current user.
+- **`GET /current_user`**: Fetch the currently logged-in user.
+- **`POST /user/update`**: Update user profile information.
+
+### Book Endpoints
+- **`GET /books`**: Fetch a paginated list of books.
+- **`GET /books/search`**: Search for books by title, author, category, or ISBN.
+- **`GET /books/<isbn13>`**: Fetch detailed information for a specific book.
+- **`POST /books/<isbn13>/rate`**: Submit or update a user's rating for a book.
+- **`GET /books/<isbn13>/user-rating`**: Retrieve the current user's rating for a specific book.
+
+### Favorites Endpoints
+- **`POST /add_to_favorites`**: Add a book to the user's favorites.
+- **`POST /remove_from_favorites`**: Remove a book from the user's favorites.
+- **`GET /favorites`**: Retrieve the user's list of favorite books.
+
+### Comments Endpoints
+- **`POST /books/<isbn13>/comments`**: Add a comment for a book.
+- **`GET /books/<isbn13>/comments`**: Retrieve comments for a specific book.
+
+### Categories Endpoint
+- **`GET /categories`**: Fetch all available book categories.
 
 
 
@@ -91,5 +94,5 @@ CB_SERVER_PORT=8978
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/book-catalog.git](https://github.com/MykhailoMaidiuk/WEBApplication/tree/mykhailodev
-   cd book-catalog ```
+  git clone https://github.com/yourusername/book-catalog.git](https://github.com/MykhailoMaidiuk/WEBApplication/tree/mykhailodev
+  cd book-catalog ```
