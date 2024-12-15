@@ -91,8 +91,9 @@ CB_SERVER_PORT=8978
 
 ## Installation
 
-1. **Clone the Repository:**
+### 1. Clone the Repository
 
-   ```bash
-  git clone https://github.com/yourusername/book-catalog.git](https://github.com/MykhailoMaidiuk/WEBApplication/tree/mykhailodev
-  cd book-catalog ```
+```bash
+git clone https://github.com/MykhailoMaidiuk/WEBApplication.git
+cd WEBApplication
+
