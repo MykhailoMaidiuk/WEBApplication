@@ -1,5 +1,5 @@
 // src/components/OrderConfirmation.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 function OrderConfirmation({ cartItems, toggleOrderConfirmation, userData, saveUserData, submitOrder, user }) {
   const [formData, setFormData] = useState({
@@ -16,13 +16,8 @@ function OrderConfirmation({ cartItems, toggleOrderConfirmation, userData, saveU
   });
 
   const [error, setError] = useState(null);
-
-  // useEffect(() => {
-  //   // Předvyplnění formuláře daty uživatele
-  //   if (userData) {
-  //     setFormData((prev) => ({ ...prev, ...userData }));
-  //   }
-  // }, [userData]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -32,7 +27,7 @@ function OrderConfirmation({ cartItems, toggleOrderConfirmation, userData, saveU
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const missingFields = [];
@@ -51,9 +46,50 @@ function OrderConfirmation({ cartItems, toggleOrderConfirmation, userData, saveU
       return;
     }
 
-    saveUserData(formData);
-    submitOrder(formData);
+    setIsSubmitting(true);
     setError(null);
+
+    try {
+      // Připravíme data pro backend
+      const orderData = {
+        paymentMethod: formData.paymentMethod,
+        items: cartItems.map((item) => ({
+          isbn13: item.isbn13,
+          quantity: 1, // Předpokládáme, že každý kus je jednou položkou. Můžete upravit dle potřeby
+        })),
+      };
+
+      const response = await fetch('http://localhost:8009/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+        credentials: 'include', // Pro odesílání cookies s autentizací
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit order');
+      }
+
+      const data = await response.json();
+      setSuccessMessage(`Order placed successfully! Order ID: ${data.order.id}`);
+
+      // Zavoláme backend funkci pro zpracování objednávky
+      submitOrder(formData);
+
+      // Vymažeme košík
+      setCart([]);
+      localStorage.removeItem('cart');
+
+      // Zavřeme formulář
+      toggleOrderConfirmation();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -159,7 +195,10 @@ function OrderConfirmation({ cartItems, toggleOrderConfirmation, userData, saveU
             </select>
           </label>
           {error && <p style={{ color: 'red' }}>{error}</p>}
-          <button type="submit">Place Order</button>
+          {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Placing Order...' : 'Place Order'}
+          </button>
         </form>
       </div>
     </div>

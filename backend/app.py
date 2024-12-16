@@ -16,6 +16,8 @@ from utils.csv_utils import import_data_from_csv
 from database.database import db, init_app
 from models.book import Base
 from models.user import User
+from routes.order_routes import order_bp
+from routes.audit_routes import audit_bp
 
 
 # Configure logging
@@ -58,6 +60,9 @@ login_manager.login_view = 'auth.login'
 app.register_blueprint(auth_bp)
 app.register_blueprint(books_bp)
 app.register_blueprint(comments_bp)
+app.register_blueprint(audit_bp)
+app.register_blueprint(order_bp)
+
 
 @login_manager.user_loader
 def load_user(user_id):
