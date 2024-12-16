@@ -1,17 +1,19 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next'; // Přidáno pro překlad
 
-function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout}) {
+function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout }) {
+  const { t } = useTranslation(); // Použití pro překlady
   const totalPrice = cartItems.reduce((sum, book) => sum + (book.price || 0), 0);
 
   return (
     <div className="cart-overlay">
       <div className="cart">
         <button className="cart__close" onClick={toggleCart}>
-          Close
+          {t("Close")}
         </button>
-        <h2>Basket</h2>
+        <h2>{t("Basket")}</h2>
         {cartItems.length === 0 ? (
-          <p>Your basket is empty</p>
+          <p>{t("Your basket is empty")}</p>
         ) : (
           <>
             <ul>
@@ -19,7 +21,7 @@ function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout}) {
                 <li key={index} className="cart__item">
                   <img
                     src={item.thumbnail || 'https://via.placeholder.com/50'}
-                    alt={item.title}
+                    alt={t("Book cover for {{title}}", { title: item.title })}
                     className="cart__item-image"
                   />
                   <div className="cart__item-info">
@@ -27,23 +29,25 @@ function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout}) {
                     <p className="cart__item-category">
                       {item.categories && item.categories.length > 0
                         ? item.categories.join(", ")
-                        : 'No category'}
+                        : t("No category")}
                     </p>
-                    <p className="cart__item-price">{item.price ? `${item.price} Kč` : 'Not priced'}</p>
+                    <p className="cart__item-price">
+                      {item.price ? `${item.price} ${t("Kč")}` : t("Not priced")}
+                    </p>
                   </div>
                   <button
                     className="cart__item-remove"
                     onClick={() => removeFromCart(index)}
                   >
-                    Delete
+                    {t("Delete")}
                   </button>
                 </li>
               ))}
             </ul>
-            <p className="cart__total">Total: {totalPrice} Kč</p>
+            <p className="cart__total">{t("Total: {{totalPrice}} Kč", { totalPrice })}</p>
             {/* Button to proceed to order confirmation */}
             <button className="cart__checkout" onClick={proceedToCheckout}>
-              Accepte order
+              {t("Accept order")}
             </button>
           </>
         )}
