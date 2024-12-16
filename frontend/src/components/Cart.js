@@ -1,8 +1,9 @@
+// src/components/Cart.js
 import React from 'react';
-import { useTranslation } from 'react-i18next'; // Přidáno pro překlad
+import { useTranslation } from 'react-i18next';
 
 function Cart({ cartItems, toggleCart, removeFromCart, proceedToCheckout }) {
-  const { t } = useTranslation(); // Použití pro překlady
+  const { t } = useTranslation();
   const totalPrice = cartItems.reduce((sum, book) => sum + (book.price || 0), 0);
 
   return (

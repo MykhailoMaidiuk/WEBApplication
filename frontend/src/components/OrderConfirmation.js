@@ -2,7 +2,17 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-function OrderConfirmation({ cartItems, toggleOrderConfirmation, userData, saveUserData, submitOrder, user }) {
+function OrderConfirmation({
+  cartItems,
+  toggleOrderConfirmation,
+  userData,
+  saveUserData,
+  submitOrder,
+  user,
+  isSubmitting,
+  error,
+  successMessage,
+}) {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({
     username: user?.username || '',
@@ -17,9 +27,7 @@ function OrderConfirmation({ cartItems, toggleOrderConfirmation, userData, saveU
     paymentMethod: '',
   });
 
-  const [error, setError] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(null);
+  const [localError, setLocalError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -44,12 +52,9 @@ function OrderConfirmation({ cartItems, toggleOrderConfirmation, userData, saveU
     if (!formData.paymentMethod.trim()) missingFields.push(t('Payment Method'));
 
     if (missingFields.length > 0) {
-      setError(t('Please fill in the following required fields: {{fields}}', { fields: missingFields.join(', ') }));
+      setLocalError(t('Please fill in the following required fields: {{fields}}', { fields: missingFields.join(', ') }));
       return;
     }
-
-    setIsSubmitting(true);
-    setError(null);
 
     try {
       // Připravíme data pro backend
@@ -61,36 +66,10 @@ function OrderConfirmation({ cartItems, toggleOrderConfirmation, userData, saveU
         })),
       };
 
-      const response = await fetch('http://localhost:8009/orders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(orderData),
-        credentials: 'include', // Pro odesílání cookies s autentizací
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || t('Failed to submit order'));
-      }
-
-      const data = await response.json();
-      setSuccessMessage(t('Order placed successfully! Order ID: {{id}}', { id: data.order.id }));
-
-      // Zavoláme backend funkci pro zpracování objednávky
-      submitOrder(formData);
-
-      // Vymažeme košík
-      setCart([]);
-      localStorage.removeItem('cart');
-
-      // Zavřeme formulář
-      toggleOrderConfirmation();
+      // Zavoláme funkci submitOrder předanou jako prop z App.js
+      await submitOrder(formData);
     } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsSubmitting(false);
+      setLocalError(err.message);
     }
   };
 
@@ -196,7 +175,7 @@ function OrderConfirmation({ cartItems, toggleOrderConfirmation, userData, saveU
               <option value="card">{t('Online Card Payment (+1%)')}</option>
             </select>
           </label>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
+          {(localError || error) && <p style={{ color: 'red' }}>{localError || error}</p>}
           {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
           <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? t('Placing Order...') : t('Place Order')}

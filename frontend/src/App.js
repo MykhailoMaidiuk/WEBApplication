@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -29,6 +30,11 @@ function App() {
   const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(true); // Simulate user auth
+
+  // States for order submission feedback
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const API_URL =
     window.location.hostname === "localhost"
@@ -69,7 +75,7 @@ function App() {
   const getBooks = async (page = currentPage) => {
     try {
       const response = await fetch(`${API_URL}/books?page=${page}&page_size=${pageSize}`);
-      if (!response.ok) throw new Error("Failed to fetch books");
+      if (!response.ok) throw new Error(t("Failed to fetch books"));
       const data = await response.json();
       setBooks(data.books);
       setTotalBooks(data.totalBooks);
@@ -82,7 +88,7 @@ function App() {
 
   const addToCart = (book) => {
     if (!isAuthenticated) {
-      alert("Please log in to add items to the cart.");
+      alert(t("Please log in to add items to the cart."));
       return;
     }
     const newCart = [...cart, book];
@@ -99,7 +105,7 @@ function App() {
 
   const toggleCart = () => {
     if (!isAuthenticated) {
-      alert("Please log in to view the cart.");
+      alert(t("Please log in to view the cart."));
       return;
     }
     setIsCartOpen(!isCartOpen);
@@ -108,7 +114,7 @@ function App() {
   // Proceed to checkout: close cart, open order form
   const proceedToCheckout = () => {
     if (cart.length === 0) {
-      alert("Your cart is empty.");
+      alert(t("Your cart is empty."));
       return;
     }
     setIsCartOpen(false);
@@ -141,7 +147,7 @@ function App() {
             const data = await response.json();
             setUser(data);
           } else {
-            console.error("Error fetching user details");
+            console.error(t("Error fetching user details"));
             setUser(userData.user);
           }
         } else {
@@ -152,41 +158,39 @@ function App() {
         setFavorites([]);
       }
     } catch (error) {
-      console.error("Error checking current user", error);
+      console.error(t("Error checking current user"), error);
       setUser(null);
       setFavorites([]);
     }
   };
 
-  // Внутри App.js
+  // Update user profile
+  const updateUserProfile = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
 
-const updateUserProfile = (updatedUser) => {
-  setUser(updatedUser);
-  localStorage.setItem("user", JSON.stringify(updatedUser));
+    // Split full_name into firstName and lastName
+    let firstName = "";
+    let lastName = "";
+    if (updatedUser.full_name) {
+      const parts = updatedUser.full_name.trim().split(" ");
+      firstName = parts[0] || "";
+      lastName = parts.slice(1).join(" ") || "";
+    }
 
-  // Разделяем full_name на firstName и lastName
-  let firstName = "";
-  let lastName = "";
-  if (updatedUser.full_name) {
-    const parts = updatedUser.full_name.trim().split(" ");
-    firstName = parts[0] || "";
-    lastName = parts.slice(1).join(" ") || "";
-  }
+    const formData = {
+      firstName: firstName,
+      lastName: lastName,
+      email: updatedUser.email || "",
+      personalAddress: updatedUser.personal_address || "",
+      billingAddress: updatedUser.billing_address || "",
+      consent: false,
+      paymentMethod: ""
+    };
 
-  const formData = {
-    firstName: firstName,
-    lastName: lastName,
-    email: updatedUser.email || "",
-    personalAddress: updatedUser.personal_address || "",
-    billingAddress: updatedUser.billing_address || "",
-    consent: false,
-    paymentMethod: ""
+    // Save userData so OrderConfirmation can pre-fill the form
+    saveUserData(formData);
   };
-
-  // Сохраняем userData, чтобы OrderConfirmation мог автоматически подставить данные
-  saveUserData(formData);
-};
-
 
   const toggleFavorite = async (book) => {
     const isAlreadyFavorite = favorites.some((fav) => fav.isbn13 === book.isbn13);
@@ -206,7 +210,7 @@ const updateUserProfile = (updatedUser) => {
             prevFavorites.filter((fav) => fav.isbn13 !== book.isbn13)
           );
         } else {
-          console.error("Error removing from favorites", await response.text());
+          console.error(t("Error removing from favorites"), await response.text());
         }
       } else {
         const response = await fetch(`${API_URL}/add_to_favorites`, {
@@ -221,11 +225,11 @@ const updateUserProfile = (updatedUser) => {
         if (response.ok) {
           setFavorites((prevFavorites) => [...prevFavorites, book]);
         } else {
-          console.error("Error adding to favorites", await response.text());
+          console.error(t("Error adding to favorites"), await response.text());
         }
       }
     } catch (error) {
-      console.error("Error toggling favorite", error);
+      console.error(t("Error toggling favorite"), error);
     }
   };
 
@@ -233,22 +237,22 @@ const updateUserProfile = (updatedUser) => {
     const fetchCategories = async () => {
       try {
         const response = await fetch(`${API_URL}/categories`);
-        if (!response.ok) throw new Error("Failed to fetch categories");
+        if (!response.ok) throw new Error(t("Failed to fetch categories"));
         const data = await response.json();
         setCategories(data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error(t("Error fetching categories:"), error);
       }
     };
     fetchCategories();
-  }, []);
+  }, [API_URL, t]);
 
   useEffect(() => {
     checkCurrentUser();
     getBooks(currentPage);
-  }, [i18n.language, currentPage]);
+  }, [i18n.language, currentPage]); // Re-fetch books on language change or page change
 
-  // Submit order with surcharge calculation
+  // Kompletní submitOrder funkce
   const submitOrder = async (formData) => {
     // Vypočítání příplatků
     let surcharge = 0;
@@ -259,21 +263,22 @@ const updateUserProfile = (updatedUser) => {
       surcharge = totalPrice * 0.01; // 1% příplatek za platbu kartou
     }
 
-    const totalPrice =
-      cart.reduce((sum, book) => sum + (book.price || 0), 0) + surcharge;
+    const totalPrice = cart.reduce((sum, book) => sum + (book.price || 0), 0) + surcharge;
 
     // Připravíme data pro backend
     const orderData = {
       paymentMethod: formData.paymentMethod,
       items: cart.map((book) => ({
         isbn13: book.isbn13,
-        quantity: 1, // Předpokládáme, že každý kus je jednou položkou.
+        quantity: 1, // Předpokládáme, že každý kus je jednou položkou. Můžete upravit dle potřeby
       })),
+      // Můžete přidat další informace, pokud jsou potřebné na backendu
     };
 
     try {
       setIsSubmitting(true);
       setError(null);
+      setSuccessMessage(null);
 
       const response = await fetch(`${API_URL}/orders`, {
         method: "POST",
@@ -291,9 +296,6 @@ const updateUserProfile = (updatedUser) => {
 
       const data = await response.json();
       setSuccessMessage(t("Order placed successfully! Order ID: {{id}}", { id: data.order.id }));
-
-      // Zavoláme backend funkci pro zpracování objednávky
-      submitOrder(formData);
 
       // Vymažeme košík
       setCart([]);
@@ -330,7 +332,7 @@ const updateUserProfile = (updatedUser) => {
               cartItems={cart}
               toggleCart={toggleCart}
               removeFromCart={removeFromCart}
-              proceedToCheckout={proceedToCheckout} // "Accepte order" button calls this
+              proceedToCheckout={proceedToCheckout} // "Accept order" button calls this
             />
           )}
           {isOrderFormOpen && (
@@ -341,6 +343,9 @@ const updateUserProfile = (updatedUser) => {
               saveUserData={saveUserData}
               submitOrder={submitOrder}
               user={user}
+              isSubmitting={isSubmitting}
+              error={error}
+              successMessage={successMessage}
             />
           )}
           <Routes>
@@ -356,10 +361,7 @@ const updateUserProfile = (updatedUser) => {
                 />
               }
             />
-            <Route
-              path="/audit-logs"
-              element={<AuditLogs />} // Nová routa pro audit logy
-            />
+
             <Route
               path="/"
               element={
