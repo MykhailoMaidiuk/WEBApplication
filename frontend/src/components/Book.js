@@ -31,17 +31,17 @@ function Book({ book, user, onFavorite, isFavorite, addToCart }) {
         <div className="book__cover--darkened"></div>
       </div>
       <div className="book__info">
-        <div className="book__title">{book.title}</div>
+        <div className="book__title">{book.title || t("Untitled")}</div>
         <div className="book__author">{book.authors || t("Unknown Author")}</div>
         <div className="book__category">
           {book.categories && book.categories.length > 0
-            ? t("Category: {{category}}", {category: book.categories.join(", ")})
+            ? t("Category: {{category}}", { category: book.categories.join(", ") })
             : t("No category")}
         </div>
-        
+
         {book.price ? (
           <div className="book__price">
-            {`${t("Price:")} ${book.price} Czk`}
+            {`${t("Price:")} ${book.price} ${t("CZK")}`}
           </div>
         ) : (
           <div className="book__price">
@@ -61,13 +61,13 @@ function Book({ book, user, onFavorite, isFavorite, addToCart }) {
               className="book__add-to-favorites"
               onClick={handleClick}
             >
-              {isFavorite ? t("Remove") : t("Add to Favorites")}
+              {isFavorite ? t("Remove from Favorites") : t("Add to Favorites")}
             </button>
           </div>
         )}
 
         <div className={`book__average book__average--${getClassByRate(book.average_rating)}`}>
-          {book.average_rating}
+          {book.average_rating || t("No rating available")}
         </div>
       </div>
     </div>
@@ -82,12 +82,12 @@ Book.propTypes = {
     average_rating: PropTypes.number,
     thumbnail: PropTypes.string,
     isbn13: PropTypes.string.isRequired,
-    price: PropTypes.number
+    price: PropTypes.number,
   }).isRequired,
   onFavorite: PropTypes.func.isRequired,
   isFavorite: PropTypes.bool.isRequired,
   user: PropTypes.object,
-  addToCart: PropTypes.func.isRequired
+  addToCart: PropTypes.func.isRequired,
 };
 
 export default Book;

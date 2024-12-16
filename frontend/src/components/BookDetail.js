@@ -11,17 +11,17 @@ function getClassByRate(rating) {
 }
 
 function BookRating({ isbn13, averageRating, ratingsCount, onUpdateRating }) {
-  const [userRating, setUserRating] = useState(0); // Поточне значення в полі вводу
-  const [currentUserRating, setCurrentUserRating] = useState(null); // Рейтинг користувача з сервера
-  const [rating, setRating] = useState(averageRating); // Середній рейтинг
-  const [count, setCount] = useState(ratingsCount); // Кількість оцінок
+  const { t } = useTranslation(); // Použití pro překlady
+  const [userRating, setUserRating] = useState(0);
+  const [currentUserRating, setCurrentUserRating] = useState(null);
+  const [rating, setRating] = useState(averageRating);
+  const [count, setCount] = useState(ratingsCount);
 
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:8009"
       : "http://wea.nti.tul.cz:8009";
 
-  // Завантаження рейтингу для поточного користувача
   useEffect(() => {
     const fetchUserRating = async () => {
       try {
@@ -31,19 +31,18 @@ function BookRating({ isbn13, averageRating, ratingsCount, onUpdateRating }) {
 
         if (response.ok) {
           const data = await response.json();
-          setCurrentUserRating(data.user_rating); // Отримуємо поточний рейтинг користувача
+          setCurrentUserRating(data.user_rating);
         } else {
-          console.error("Failed to fetch user rating");
+          console.error(t("Failed to fetch user rating"));
         }
       } catch (error) {
-        console.error("Error fetching user rating:", error);
+        console.error(t("Error fetching user rating: {{error}}", { error: error.message }));
       }
     };
 
     fetchUserRating();
-  }, [isbn13]);
+  }, [isbn13, t]);
 
-  // Обробка натискання "Submit"
   const handleRatingSubmit = async () => {
     try {
       const response = await fetch(`${API_URL}/books/${isbn13}/rate`, {
@@ -57,47 +56,53 @@ function BookRating({ isbn13, averageRating, ratingsCount, onUpdateRating }) {
         const data = await response.json();
         setRating(data.average_rating);
         setCount(data.ratings_count);
-        setCurrentUserRating(userRating); // Оновлюємо локальний рейтинг користувача
+        setCurrentUserRating(userRating);
 
-        // Оновлюємо середній рейтинг у батьківському компоненті
-        onUpdateRating(data.average_rating); // Передаємо новий рейтинг в батьківський компонент
+        onUpdateRating(data.average_rating);
       } else {
         const errorData = await response.json();
-        alert(`Failed to submit rating: ${errorData.error || response.statusText}`);
+        alert(t("Failed to submit rating: {{error}}", { error: errorData.error || response.statusText }));
       }
     } catch (error) {
-      alert("An error occurred: " + error.message);
+      alert(t("An error occurred: {{error}}", { error: error.message }));
     }
   };
 
   return (
-      <div>
-        <p style={{color: '#ffffff'}}>
-          <h3>Your Rating</h3>
-          <input
-              type="number"
-              min="1"
-              max="5"
-              value={userRating}
-              onChange={(e) => setUserRating(Number(e.target.value))}
-              className="p-2 border border-gray-400 rounded"
-          />
-          <button
-              onClick={handleRatingSubmit}
-              className="ml-2 px-4 py-2 bg-blue-500 text-white rounded"
-          >
-            Submit
-          </button>
-          <p style={{color: '#ffffff'}}>
-            {currentUserRating !== null
-                ? `You rated: ${currentUserRating}`
-                : "You haven't rated this book yet"}{" "}
-            ({count} votes)
-          </p>
+    <div>
+      <p style={{ color: "#ffffff" }}>
+        <h3>{t("Your Rating")}</h3>
+        <input
+          type="number"
+          min="1"
+          max="5"
+          value={userRating}
+          onChange={(e) => setUserRating(Number(e.target.value))}
+          className="p-2 border border-gray-400 rounded"
+        />
+        <button
+          onClick={handleRatingSubmit}
+          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          {t("Submit")}
+        </button>
+        <p style={{ color: "#ffffff" }}>
+          {currentUserRating !== null
+            ? t("You rated: {{rating}}", { rating: currentUserRating })
+            : t("You haven't rated this book yet")}{" "}
+          ({t("{{count}} votes", { count })})
         </p>
-      </div>
-);
+      </p>
+    </div>
+  );
 }
+
+BookRating.propTypes = {
+  isbn13: PropTypes.string.isRequired,
+  averageRating: PropTypes.number.isRequired,
+  ratingsCount: PropTypes.number.isRequired,
+  onUpdateRating: PropTypes.func.isRequired,
+};
 
 function BookDetail({ isbn13, onBack }) {
   const { t } = useTranslation();

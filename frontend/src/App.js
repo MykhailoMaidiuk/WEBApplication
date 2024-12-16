@@ -249,24 +249,63 @@ const updateUserProfile = (updatedUser) => {
   }, [i18n.language, currentPage]);
 
   // Submit order with surcharge calculation
-  const submitOrder = (formData) => {
+  const submitOrder = async (formData) => {
+    // Vypočítání příplatků
     let surcharge = 0;
     if (formData.paymentMethod === "dobirka") {
-      surcharge = 50; // Cash on Delivery fixed surcharge
+      surcharge = 50; // Dobírka fixní příplatek
     } else if (formData.paymentMethod === "card") {
       const totalPrice = cart.reduce((sum, book) => sum + (book.price || 0), 0);
-      surcharge = totalPrice * 0.01; // 1% surcharge for card payment
+      surcharge = totalPrice * 0.01; // 1% příplatek za platbu kartou
     }
 
     const totalPrice =
       cart.reduce((sum, book) => sum + (book.price || 0), 0) + surcharge;
 
-    alert(`Order placed! Total amount: ${totalPrice.toFixed(2)} Kč`);
+    // Připravíme data pro backend
+    const orderData = {
+      paymentMethod: formData.paymentMethod,
+      items: cart.map((book) => ({
+        isbn13: book.isbn13,
+        quantity: 1, // Předpokládáme, že každý kus je jednou položkou.
+      })),
+    };
 
-    // Clear the cart
-    setCart([]);
-    localStorage.removeItem("cart");
-    setIsOrderFormOpen(false);
+    try {
+      setIsSubmitting(true);
+      setError(null);
+
+      const response = await fetch(`${API_URL}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+        credentials: "include", // Pro odesílání cookies s autentizací
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || t("Failed to submit order"));
+      }
+
+      const data = await response.json();
+      setSuccessMessage(t("Order placed successfully! Order ID: {{id}}", { id: data.order.id }));
+
+      // Zavoláme backend funkci pro zpracování objednávky
+      submitOrder(formData);
+
+      // Vymažeme košík
+      setCart([]);
+      saveCartToStorage([]);
+
+      // Zavřeme formulář
+      setIsOrderFormOpen(false);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -309,11 +348,17 @@ const updateUserProfile = (updatedUser) => {
             <Route path="/register" element={<Register setUser={setUser} />} />
             <Route
               path="/user-profile"
-              element={<UserProfile
+              element={
+                <UserProfile
                   user={user}
                   updateUserProfile={updateUserProfile}
                   onProfileUpdate={checkCurrentUser}
-              />}
+                />
+              }
+            />
+            <Route
+              path="/audit-logs"
+              element={<AuditLogs />} // Nová routa pro audit logy
             />
             <Route
               path="/"
