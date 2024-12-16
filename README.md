@@ -82,6 +82,64 @@ CB_SERVER_PORT=8978
 ### Categories Endpoint
 - **`GET /categories`**: Fetch all available book categories.
 
+### Order Endpoints
+- **`POST /orders`**: Create a new order with the specified items and payment method.
+  - **Request Body**:
+    ```json
+    {
+      "paymentMethod": "card",
+      "items": [
+        {
+          "isbn13": "9781556434952",
+          "quantity": 2
+        }
+      ]
+    }
+    ```
+  - **Response**:
+    ```json
+    {
+      "message": "Order created successfully",
+      "order": {
+        "id": 1,
+        "user_id": 5,
+        "created_at": "2024-12-16T12:34:56Z",
+        "total_amount": 49.99,
+        "payment_method": "card",
+        "items": [
+          {
+            "id": 1,
+            "order_id": 1,
+            "book_isbn13": "9781556434952",
+            "quantity": 2,
+            "price": 24.99
+          }
+        ]
+      }
+    }
+    ```
+
+### Audit Log Endpoints
+- **`GET /audit_logs`**: Retrieve the last 100 audit logs (admin access only).
+  - **Response**:
+    ```json
+    [
+      {
+        "id": 1,
+        "timestamp": "2024-12-16T12:34:56Z",
+        "user_id": 5,
+        "username": "admin",
+        "event_type": "create_order",
+        "event_details": "{\"order_id\": 1, \"total_amount\": 49.99, \"payment_method\": \"card\", \"items\": [{\"isbn13\": \"9781556434952\", \"quantity\": 2}]}"
+      }
+    ]
+    ```
+
+
+
+
+
+
 
 
 ## Prerequisites
