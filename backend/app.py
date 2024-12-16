@@ -58,7 +58,7 @@ app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key')
 app.config['SESSION_PERMANENT'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
-app.config['SESSION_COOKIE_SECURE'] = False  # Nastavte na True v produkci
+app.config['SESSION_COOKIE_SECURE'] = 'None'
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Nebo 'Strict' pro větší bezpečnost
 
@@ -135,6 +135,7 @@ def create_default_user():
             logging.error(f"Chyba při vytváření výchozího uživatele: {e}")
         finally:
             db_session.close()
+
 
 if __name__ == '__main__':
     create_tables_with_retry()
