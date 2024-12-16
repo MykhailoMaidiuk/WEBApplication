@@ -3,6 +3,7 @@ from sqlalchemy import and_, asc, desc
 from models.book import Book
 from models.favorite_book import FavoriteBook
 from database.database import Session
+from utils.audit_logger import log_event
 
 def apply_sorting(query, sort_by):
     if sort_by == 'title_asc':
@@ -114,6 +115,16 @@ def process_received_data(data, logger):
                     existing_book.ratings_count = item.get('ratings_count')
                     existing_book.price = price
                     updated_records += 1
+
+                    # Zapis do auditního logu
+                    log_event(
+                        event_type='update_book',
+                        event_details={
+                            'isbn13': existing_book.isbn13,
+                            'title': existing_book.title
+                        },
+                        user=None  # Systémový uživatel nebo specifikujte 'CDB' jako systémový uživatel
+                    )
                 else:
                     # Vložení nové knihy
                     new_book = Book(
@@ -133,11 +144,30 @@ def process_received_data(data, logger):
                     )
                     session.add(new_book)
                     added_records += 1
+
+                    # Zapis do auditního logu
+                    log_event(
+                        event_type='add_book',
+                        event_details={
+                            'isbn13': new_book.isbn13,
+                            'title': new_book.title
+                        },
+                        user=None  # Systémový uživatel nebo specifikujte 'CDB' jako systémový uživatel
+                    )
             except Exception as e:
                 logger.error(f"Record {index}: Error processing book: {e}. Skipping record.")
                 skipped_records += 1
 
         session.commit()
+        log_event(
+            event_type='process_received_data',
+            event_details={
+                'added': added_records,
+                'updated': updated_records,
+                'skipped': skipped_records
+            },
+            user=None  # Systémový uživatel nebo specifikujte 'CDB' jako systémový uživatel
+        )
         return {
             "message": "Data processed",
             "added": added_records,
@@ -150,6 +180,7 @@ def process_received_data(data, logger):
         return {"error": "Internal server error", "status": 500}
     finally:
         session.close()
+
 
 def search_books_query(page, page_size, title, author, category, isbn13, sort_by):
     session = Session()

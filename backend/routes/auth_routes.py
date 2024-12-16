@@ -5,6 +5,7 @@ from models.user import User
 from sqlalchemy.exc import IntegrityError
 from flask_bcrypt import Bcrypt
 import logging
+from utils.audit_logger import log_event
 
 auth_bp = Blueprint('auth', __name__)
 bcrypt = Bcrypt()
@@ -26,12 +27,18 @@ def register():
     try:
         db_session.add(user)
         db_session.commit()
+        log_event(
+            event_type='register',
+            event_details={'username': username},
+            user=user
+        )
         return jsonify({"message": "Uživatel úspěšně registrován"}), 201
     except IntegrityError:
         db_session.rollback()
         return jsonify({"error": "Jméno uživatele již existuje"}), 400
     finally:
         db_session.close()
+
 
 
 @auth_bp.route("/login", methods=["POST"])
@@ -44,7 +51,12 @@ def login():
     try:
         user = db_session.query(User).filter_by(username=username).first()
         if user and user.check_password(password):
-            login_user(user, remember=True)  # Přidáno `remember=True`
+            login_user(user, remember=True)
+            log_event(
+                event_type='login',
+                event_details={'username': username},
+                user=user
+            )
             return jsonify({"message": "Přihlášení úspěšné"}), 200
         else:
             return jsonify({"error": "Neplatné přihlašovací údaje"}), 401
@@ -55,8 +67,15 @@ def login():
 @auth_bp.route("/logout", methods=["POST"])
 @login_required
 def logout():
+    user = current_user  # Uchovejte si uživatele před logoutem
     logout_user()
+    log_event(
+        event_type='logout',
+        event_details={'username': user.username},
+        user=user
+    )
     return jsonify({"message": "Odhlášení úspěšné"}), 200
+
 
 @auth_bp.route('/current_user', methods=['GET'])
 @login_required
