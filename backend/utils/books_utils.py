@@ -89,6 +89,10 @@ def process_received_data(data, logger):
         updated_records = 0
         skipped_records = 0
 
+        # Deaktivovat všechny knihy před zpracováním
+        session.query(Book).update({"is_active": False})
+        session.commit()
+
         for index, item in enumerate(data, start=1):
             if not all(key in item for key in ['isbn13', 'isbn10', 'title']):
                 logger.error(f"Record {index}: Missing required fields. Skipping record.")
@@ -114,17 +118,8 @@ def process_received_data(data, logger):
                     existing_book.num_pages = item.get('num_pages')
                     existing_book.ratings_count = item.get('ratings_count')
                     existing_book.price = price
+                    existing_book.is_active = True  # Aktivace knihy
                     updated_records += 1
-
-                    # Zapis do auditního logu
-                    log_event(
-                        event_type='update_book',
-                        event_details={
-                            'isbn13': existing_book.isbn13,
-                            'title': existing_book.title
-                        },
-                        user=None  # Systémový uživatel nebo specifikujte 'CDB' jako systémový uživatel
-                    )
                 else:
                     # Vložení nové knihy
                     new_book = Book(
@@ -141,33 +136,15 @@ def process_received_data(data, logger):
                         num_pages=item.get('num_pages'),
                         ratings_count=item.get('ratings_count'),
                         price=price,
+                        is_active=True,  # Aktivace nové knihy
                     )
                     session.add(new_book)
                     added_records += 1
-
-                    # Zapis do auditního logu
-                    log_event(
-                        event_type='add_book',
-                        event_details={
-                            'isbn13': new_book.isbn13,
-                            'title': new_book.title
-                        },
-                        user=None  # Systémový uživatel nebo specifikujte 'CDB' jako systémový uživatel
-                    )
             except Exception as e:
                 logger.error(f"Record {index}: Error processing book: {e}. Skipping record.")
                 skipped_records += 1
 
         session.commit()
-        log_event(
-            event_type='process_received_data',
-            event_details={
-                'added': added_records,
-                'updated': updated_records,
-                'skipped': skipped_records
-            },
-            user=None  # Systémový uživatel nebo specifikujte 'CDB' jako systémový uživatel
-        )
         return {
             "message": "Data processed",
             "added": added_records,
