@@ -39,7 +39,7 @@ function App() {
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:8009"
-      : "http://backend:8009";
+      : "http://backend:8009"; // Aktualizujte na správný URL
 
   // Save and load cart from localStorage
   const saveCartToStorage = (newCart) => {
@@ -185,7 +185,7 @@ function App() {
       personalAddress: updatedUser.personal_address || "",
       billingAddress: updatedUser.billing_address || "",
       consent: false,
-      paymentMethod: ""
+      paymentMethod: "",
     };
 
     // Save userData so OrderConfirmation can pre-fill the form
@@ -245,11 +245,13 @@ function App() {
       }
     };
     fetchCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [API_URL, t]);
 
   useEffect(() => {
     checkCurrentUser();
     getBooks(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n.language, currentPage]); // Re-fetch books on language change or page change
 
   // Kompletní submitOrder funkce
@@ -259,20 +261,21 @@ function App() {
     if (formData.paymentMethod === "dobirka") {
       surcharge = 50; // Dobírka fixní příplatek
     } else if (formData.paymentMethod === "card") {
-      const totalPrice = cart.reduce((sum, book) => sum + (book.price || 0), 0);
+      const totalPrice = cart.reduce((sum, book) => sum + (parseFloat(book.price) || 0), 0);
       surcharge = totalPrice * 0.01; // 1% příplatek za platbu kartou
     }
 
-    const totalPrice = cart.reduce((sum, book) => sum + (book.price || 0), 0) + surcharge;
+    const totalPrice = cart.reduce((sum, book) => sum + (parseFloat(book.price) || 0), 0) + surcharge;
 
     // Připravíme data pro backend
     const orderData = {
       paymentMethod: formData.paymentMethod,
       items: cart.map((book) => ({
         isbn13: book.isbn13,
-        quantity: 1, // Předpokládáme, že každý kus je jednou položkou. Můžete upravit dle potřeby
+        quantity: 1,
+        price: parseFloat(book.price) || 0, // Zajistí, že cena je float
       })),
-      // Můžete přidat další informace, pokud jsou potřebné na backendu
+      totalAmount: parseFloat(totalPrice.toFixed(2)), // Zaokrouhlení a převod na float
     };
 
     try {
@@ -295,7 +298,9 @@ function App() {
       }
 
       const data = await response.json();
-      //setSuccessMessage(t("Order placed successfully! Order ID: {{id}}", { id: data.order.id }));
+      setSuccessMessage(
+        t("Order placed successfully! Order ID: {{id}}", { id: data.order.id })
+      );
 
       // Vymažeme košík
       setCart([]);
@@ -332,7 +337,7 @@ function App() {
               cartItems={cart}
               toggleCart={toggleCart}
               removeFromCart={removeFromCart}
-              proceedToCheckout={proceedToCheckout} // "Accept order" button calls this
+              proceedToCheckout={proceedToCheckout} // "Place Order" button calls this
             />
           )}
           {isOrderFormOpen && (
@@ -361,7 +366,6 @@ function App() {
                 />
               }
             />
-
             <Route
               path="/"
               element={

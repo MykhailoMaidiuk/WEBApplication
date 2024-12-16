@@ -10,7 +10,7 @@ function getClassByRate(rating) {
   return rating >= 4 ? "green" : rating >= 2.5 ? "orange" : "red";
 }
 
-function BookRating({ isbn13, averageRating, ratingsCount, onUpdateRating }) {
+function BookRating({ isbn13, averageRating, ratingsCount, onUpdateRating, user}) {
   const { t } = useTranslation(); // Použití pro překlady
   const [userRating, setUserRating] = useState(0);
   const [currentUserRating, setCurrentUserRating] = useState(null);
@@ -23,7 +23,7 @@ function BookRating({ isbn13, averageRating, ratingsCount, onUpdateRating }) {
       : "http://wea.nti.tul.cz:8009";
 
   useEffect(() => {
-    const fetchUserRating = async () => {
+    if(user){const fetchUserRating = async () => {
       try {
         const response = await fetch(`${API_URL}/books/${isbn13}/user-rating`, {
           credentials: "include",
@@ -41,7 +41,8 @@ function BookRating({ isbn13, averageRating, ratingsCount, onUpdateRating }) {
     };
 
     fetchUserRating();
-  }, [isbn13, t]);
+    }
+  }, [isbn13, user, t]);
 
   const handleRatingSubmit = async () => {
     try {
@@ -70,29 +71,32 @@ function BookRating({ isbn13, averageRating, ratingsCount, onUpdateRating }) {
 
   return (
     <div>
-      <p style={{ color: "#ffffff" }}>
-        <h3>{t("Your Rating")}</h3>
-        <input
-          type="number"
-          min="1"
-          max="5"
-          value={userRating}
-          onChange={(e) => setUserRating(Number(e.target.value))}
-          className="p-2 border border-gray-400 rounded"
-        />
-        <button
-          onClick={handleRatingSubmit}
-          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          {t("Submit")}
-        </button>
-        <p style={{ color: "#ffffff" }}>
-          {currentUserRating !== null
-            ? t("You rated: {{rating}}", { rating: currentUserRating })
-            : t("You haven't rated this book yet")}{" "}
-          ({t("{{count}} votes", { count })})
-        </p>
-      </p>
+      {/* Podmíněné zobrazení pro hodnocení pouze pro přihlášené uživatele */}
+      {user && (
+        <div>
+          <h3>{t("Your Rating")}</h3>
+          <input
+            type="number"
+            min="1"
+            max="5"
+            value={userRating}
+            onChange={(e) => setUserRating(Number(e.target.value))}
+            className="p-2 border border-gray-400 rounded"
+          />
+          <button
+            onClick={handleRatingSubmit}
+            className="ml-2 px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            {t("Submit")}
+          </button>
+          <p style={{ color: "#ffffff" }}>
+            {currentUserRating !== null
+              ? t("You rated: {{rating}}", { rating: currentUserRating })
+              : t("You haven't rated this book yet")}{" "}
+            ({t("{{count}} votes", { count })})
+          </p>
+        </div>
+      )}
     </div>
   );
 }
@@ -102,9 +106,10 @@ BookRating.propTypes = {
   averageRating: PropTypes.number.isRequired,
   ratingsCount: PropTypes.number.isRequired,
   onUpdateRating: PropTypes.func.isRequired,
+  user: PropTypes.object,
 };
 
-function BookDetail({ isbn13, onBack }) {
+function BookDetail({ isbn13, onBack, user }) {
   const { t } = useTranslation();
   const [book, setBook] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -218,7 +223,8 @@ function BookDetail({ isbn13, onBack }) {
         isbn13={isbn13}
         averageRating={averageRating}
         ratingsCount={book.ratings_count}
-        onUpdateRating={updateAverageRating} // Передаємо функцію для оновлення
+        onUpdateRating={updateAverageRating}
+        user={user}// Передаємо функцію для оновлення
       />
       <div className="mt-6">
         <BookComments isbn13={isbn13} />

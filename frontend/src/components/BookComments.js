@@ -43,7 +43,6 @@ function BookComments({ isbn13 }) {
                     console.log("Current user:", data);
                     setUser(data); // Оновлюємо стейт з даними користувача
                 } else {
-                    alert("Please log in to continue.");
                     setUser(null); // Якщо користувач не авторизований, обнуляємо стейт
                 }
             } catch (error) {

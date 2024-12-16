@@ -42,7 +42,7 @@ function OrderConfirmation({
 
     const missingFields = [];
 
-    // Kontrola povinných polí
+    // Check required fields
     if (!formData.full_name.trim()) missingFields.push(t('Full Name'));
     if (!formData.email.trim()) missingFields.push(t('Email'));
     if (!formData.personal_address.trim()) missingFields.push(t('Personal Address'));
@@ -57,17 +57,18 @@ function OrderConfirmation({
     }
 
     try {
-      // Připravíme data pro backend
+      // Prepare data for backend
       const orderData = {
         paymentMethod: formData.paymentMethod,
         items: cartItems.map((item) => ({
           isbn13: item.isbn13,
-          quantity: 1, // Předpokládáme, že každý kus je jednou položkou. Můžete upravit dle potřeby
+          quantity: 1, // Assuming each book is ordered once. Adjust as needed
         })),
+        // Můžete přidat další informace, pokud jsou potřebné na backendu
       };
 
-      // Zavoláme funkci submitOrder předanou jako prop z App.js
-      await submitOrder(formData);
+      // Call the submitOrder function passed as a prop
+      await submitOrder(orderData);
     } catch (err) {
       setLocalError(err.message);
     }

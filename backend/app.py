@@ -1,12 +1,14 @@
+# app.py
+
 import os
 import logging
 import sys
-from flask import Flask, render_template_string, request
+from flask import Flask, render_template_string, request, jsonify
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
-from flask_session import Session  # Přidán import
+from flask_session import Session
 from routes.auth_routes import auth_bp
 from datetime import timedelta
 from routes.book_routes import books_bp
@@ -18,7 +20,8 @@ from models.book import Base
 from models.user import User
 from routes.order_routes import order_bp
 from routes.audit_routes import audit_bp
-
+from decimal import Decimal
+from flask.json.provider import DefaultJSONProvider
 
 # Configure logging
 log_directory = os.path.join(os.getcwd(), 'logs')
@@ -33,7 +36,20 @@ logging.basicConfig(
     ],
 )
 
+# Vytvoření vlastního JSONProvideru
+class CustomJSONProvider(DefaultJSONProvider):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        return super().default(obj)
+
+# Nakonfigurujte Flask aplikaci
 app = Flask(__name__)
+
+# Nastavte vlastní JSON encoder pomocí CustomJSONProvider
+app.json = CustomJSONProvider(app)
+
+# Konfigurace Flask-Session
 session_directory = os.path.join(os.getcwd(), 'session')
 os.makedirs(session_directory, exist_ok=True)
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -42,16 +58,20 @@ app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key')
 app.config['SESSION_PERMANENT'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
-app.config['SESSION_COOKIE_SECURE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = False  # Nastavte na True v produkci
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Nebo 'Strict' pro větší bezpečnost
 
 Session(app)  # Inicializace Flask-Session
 init_app(app)
 
+# Migrace
 migrate = Migrate(app, db, directory=os.path.join(os.getcwd(), 'migrations'))
 
+# CORS nastavení
 CORS(app, supports_credentials=True, origins=["http://localhost:3009"])
+
+# Bcrypt a Login Manager
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'auth.login'
@@ -63,7 +83,7 @@ app.register_blueprint(comments_bp)
 app.register_blueprint(audit_bp)
 app.register_blueprint(order_bp)
 
-
+# User loader pro Flask-Login
 @login_manager.user_loader
 def load_user(user_id):
     db_session = db.session()
@@ -116,11 +136,8 @@ def create_default_user():
         finally:
             db_session.close()
 
-
-
 if __name__ == '__main__':
     create_tables_with_retry()
-
     if os.environ.get('IMPORT_CSV_ON_STARTUP', 'False') == 'True':
         import_data_from_csv()
     app.run(host='0.0.0.0', port=8009)

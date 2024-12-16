@@ -48,7 +48,7 @@ function BooksList({ books, currentPage, totalPages, onPageChange, favorites, to
   return (
     <div className={`books ${booksClass}`}>
       {selectedBookIsbn ? (
-        <BookDetail isbn13={selectedBookIsbn} onBack={handleBack} />
+        <BookDetail isbn13={selectedBookIsbn} onBack={handleBack} user={user} />
       ) : (
         books.map((book) => (
           <div key={book.isbn13} onClick={() => handleBookClick(book.isbn13)}>
