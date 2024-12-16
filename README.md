@@ -119,21 +119,7 @@ CB_SERVER_PORT=8978
     }
     ```
 
-### Audit Log Endpoints
-- **`GET /audit_logs`**: Retrieve the last 100 audit logs (admin access only).
-  - **Response**:
-    ```json
-    [
-      {
-        "id": 1,
-        "timestamp": "2024-12-16T12:34:56Z",
-        "user_id": 5,
-        "username": "admin",
-        "event_type": "create_order",
-        "event_details": "{\"order_id\": 1, \"total_amount\": 49.99, \"payment_method\": \"card\", \"items\": [{\"isbn13\": \"9781556434952\", \"quantity\": 2}]}"
-      }
-    ]
-    ```
+
 
 
 
