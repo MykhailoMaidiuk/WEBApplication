@@ -49,7 +49,11 @@ def add_comment(isbn13):
             print(f"Added comment: {content} for book {isbn13} by user {current_user.username}")
             return jsonify({
                 "message": "Comment added successfully",
-                "comment": new_comment.as_dict()
+                "comment": {
+                    "content": new_comment.content,
+                    "user": current_user.username,
+                    "timestamp": new_comment.created_at.isoformat() if new_comment.created_at else None,
+                }
             }), 201
 
         except Exception as e:
