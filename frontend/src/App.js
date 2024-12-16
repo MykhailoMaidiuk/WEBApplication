@@ -295,7 +295,7 @@ function App() {
       }
 
       const data = await response.json();
-      setSuccessMessage(t("Order placed successfully! Order ID: {{id}}", { id: data.order.id }));
+      //setSuccessMessage(t("Order placed successfully! Order ID: {{id}}", { id: data.order.id }));
 
       // Vymažeme košík
       setCart([]);
